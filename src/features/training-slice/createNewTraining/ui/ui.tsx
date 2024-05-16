@@ -388,7 +388,7 @@ export const CreateNewTraining = ({
           >
             {editTrainingData && (
               <span className={styles.time}>
-                {/* <Image src={Timer} width={22} height={22} alt="Timer" /> */}
+                
                 <p className={styles.p}>
                   До начала тренировки{" "}
                   <strong className={styles.strong}>{timeUntilTraining}</strong>
