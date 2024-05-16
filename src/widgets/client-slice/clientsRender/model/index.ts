@@ -28,8 +28,13 @@ export type SearchFunction = (searchText: string, clients: IUser[]) => IUser[];
 
 export const searchClients: SearchFunction = (searchText, clients) => {
   if (searchText) {
+    const searchWords = searchText.toLowerCase().split(" ");
     const filteredArray = clients.filter((item) =>
-      item.name.toLowerCase().includes(searchText.toLowerCase())
+      searchWords.some(
+        (word) =>
+          item.name.toLowerCase().includes(word) ||
+          item.surname.toLowerCase().includes(word)
+      )
     );
     return filteredArray;
   } else {
