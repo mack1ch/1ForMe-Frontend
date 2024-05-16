@@ -202,7 +202,8 @@ export const CreateSubscription = ({ clientID }: { clientID?: number }) => {
       if (response instanceof Error) {
         message.open({
           type: "error",
-          content: "Неудалось выполнить запрос",
+          content:
+            "Неудалось выполнить запрос. Проверьте правильность введенных данных",
         });
         setButtonLoading(false);
         return;
