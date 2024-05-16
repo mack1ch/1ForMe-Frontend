@@ -94,9 +94,9 @@ export const CreateNewTraining = ({
         );
         const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         setTimeUntilTraining(
-          `${days} дней, ${formatHoursCount(hours)}, ${formatMinutesCount(
-            minutes
-          )} до начала тренировки`
+          `${days !== 0 ? days + "дней," : ""} ${
+            hours !== 0 ? formatHoursCount(hours) + "," : ""
+          } ${formatMinutesCount(minutes)} до начала тренировки`
         );
       } else {
         setTimeUntilTraining("Тренировка уже началась или прошла");
