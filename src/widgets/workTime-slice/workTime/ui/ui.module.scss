@@ -1,0 +1,72 @@
+.global {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  .state {
+    border-radius: 24px;
+    background: #fff;
+    width: 100%;
+    display: flex;
+    padding: 16px;
+    justify-content: space-between;
+    align-items: flex-start;
+    .h3Wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2px;
+      .h3 {
+        color: #000;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+        text-wrap: nowrap;
+      }
+    }
+  }
+  .layout {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    width: 100%;
+    .h3 {
+      color: #6f757c;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 16px;
+    }
+    .wrap {
+      width: 100%;
+      display: flex;
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 14px;
+
+      .addNewSlot {
+        display: flex;
+        width: 100%;
+        padding: 8px 12px;
+        justify-content: center;
+        align-items: center;
+        gap: 4px;
+        border-radius: 12px;
+        background: #eaeaea;
+        color: #000;
+        text-align: center;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 135%;
+        border: none;
+        transition: all 0.2s;
+        &:active {
+          filter: brightness(96%);
+        }
+      }
+    }
+  }
+}

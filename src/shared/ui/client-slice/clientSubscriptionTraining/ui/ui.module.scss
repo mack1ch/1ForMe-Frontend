@@ -1,0 +1,26 @@
+.button {
+  display: flex;
+  padding: 12px 8px 12px 10px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  background: #e6f36c;
+  color: #000;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  border: none;
+  transition: all 0.2s;
+  &:disabled {
+    color: #878787;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    background: #f5f5f5;
+  }
+  &:active {
+    filter: brightness(90%);
+  }
+}

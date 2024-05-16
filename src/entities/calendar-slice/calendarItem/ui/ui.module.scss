@@ -1,0 +1,63 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  .article {
+    display: flex;
+    width: 44px;
+    padding: 10px 10px;
+    border-radius: 24px;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+    background: #fff;
+
+    .day {
+      color: #2e3032;
+      text-align: center;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 20px;
+    }
+    .dayOfWeek {
+      color: #6f757c;
+      text-align: center;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 16px;
+    }
+  }
+  .active {
+    background: #2e3032;
+    .day {
+      color: #fff;
+      text-align: center;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 20px;
+    }
+    .dayOfWeek {
+      color: #e1e1e9;
+      text-align: center;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 16px;
+    }
+  }
+  .dopeLayout {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    .dope {
+      width: 4px;
+      height: 4px;
+      background: #000;
+      border-radius: 50%;
+    }
+  }
+}
