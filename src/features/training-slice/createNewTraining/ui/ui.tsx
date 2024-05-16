@@ -390,7 +390,9 @@ export const CreateNewTraining = ({
               Сохранить
             </Button>
           </Form.Item>
-          <h5 className={styles.h5}>{timeUntilTraining}</h5>
+          {editTrainingData && (
+            <h5 className={styles.h5}>{timeUntilTraining}</h5>
+          )}
         </div>
       </Form>
     </>
