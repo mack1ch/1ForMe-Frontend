@@ -82,3 +82,5 @@ export const getSlots = async (
     return error as Error;
   }
 };
+
+

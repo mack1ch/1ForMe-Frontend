@@ -23,7 +23,7 @@ export default function Home() {
         >
           <HeadingWithSlash>Календарь</HeadingWithSlash>
           <Button
-            href="/app/dashboard/training"
+            href="/app/newtrainings"
             style={{ float: "right" }}
             icon={<PlusOutlined />}
             size="middle"

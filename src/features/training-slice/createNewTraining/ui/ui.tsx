@@ -43,24 +43,6 @@ export const CreateNewTraining = ({
     tariffID: null,
     clubID: null,
   });
-  useEffect(() => {
-    if (editTrainingData) {
-      setFormData((prev) => ({
-        ...prev,
-        slotID: editTrainingData?.slot.id || null,
-        clientID: editTrainingData.client.id || null,
-        tariffID:
-          editTrainingData?.subscription?.transaction?.tariff?.id ||
-          editTrainingData.transaction.tariff.id ||
-          null,
-        clubID: editTrainingData.club.id,
-        date: editTrainingData.date,
-        dateInput: editTrainingData?.date
-          ? dayjs(editTrainingData?.date, "YYYY-MM-DD")
-          : null,
-      }));
-    }
-  }, [editTrainingData]);
 
   const [selectClientsOptions, setSelectClientsOptions] =
     useState<ISelectOptions[]>();
@@ -112,7 +94,24 @@ export const CreateNewTraining = ({
   useEffect(() => {
     setButtonDisabled(!isFormValid(formData));
   }, [formData]);
-
+  useEffect(() => {
+    if (editTrainingData) {
+      setFormData((prev) => ({
+        ...prev,
+        slotID: editTrainingData?.slot.id || null,
+        clientID: editTrainingData.client.id || null,
+        tariffID:
+          editTrainingData?.subscription?.transaction?.tariff?.id ||
+          editTrainingData.transaction.tariff.id ||
+          null,
+        clubID: editTrainingData.club.id,
+        date: editTrainingData.date,
+        dateInput: editTrainingData?.date
+          ? dayjs(editTrainingData?.date, "YYYY-MM-DD")
+          : null,
+      }));
+    }
+  }, [editTrainingData]);
   const isFormValid = (formData: IFormData): boolean => {
     return (
       formData.date !== "" &&

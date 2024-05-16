@@ -9,6 +9,7 @@ export interface ISelectOptions {
 export interface IFormData {
   tariffID: number | string | null;
   clubID: number | string | null;
+  clientID: number | string | null;
 }
 
 export interface ITrainings {

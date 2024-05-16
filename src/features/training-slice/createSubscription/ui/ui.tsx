@@ -4,26 +4,27 @@ import { DashDivider } from "@/shared/ui/divider-slice/dashDivider/ui/ui";
 import { customFilterOption, customFilterSort } from "../model";
 import { useEffect, useState } from "react";
 import { IFormData, ISelectOptions, ITrainings } from "../interface";
-import { getClubs, getSlots, getTariffs, postSubscription } from "../api";
+import {
+  getClubs,
+  getSlots,
+  getTariffs,
+  getTrainerClients,
+  postSubscription,
+} from "../api";
 import { ITariff } from "@/shared/interface/tariff";
 import { convertToCurrencyFormat } from "@/shared/lib/parse/money";
 import { numberToOrdinal } from "@/shared/lib/parse/number";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { IClubSlot } from "@/shared/interface/slots";
-import { ISubscription } from "@/shared/interface/subscriptions";
 import { formatDateToDayAndDateFormat } from "@/shared/lib/parse/date";
 
-export const CreateSubscription = ({
-  clientID,
-  editSubData,
-}: {
-  clientID: number;
-  editSubData?: ISubscription;
-}) => {
+export const CreateSubscription = ({ clientID }: { clientID?: number }) => {
   const dateFormat = "DD.MM.YYYY";
   const router = useRouter();
   const [isButtonLoading, setButtonLoading] = useState<boolean>(false);
+  const [selectClientsOptions, setSelectClientsOptions] =
+    useState<ISelectOptions[]>();
   const [tariffs, setTariffs] = useState<ITariff[]>();
   const [selectTariff, setSelectTariff] = useState<ITariff>();
   const [trainings, setTrainings] = useState<ITrainings[]>(
@@ -44,6 +45,7 @@ export const CreateSubscription = ({
   const [formData, setFormData] = useState<IFormData>({
     tariffID: null,
     clubID: null,
+    clientID: clientID || null,
   });
   const [selectTariffOptions, setSelectTariffsOptions] = useState<
     ISelectOptions[]
@@ -51,13 +53,33 @@ export const CreateSubscription = ({
   const [selectClubsOptions, setSelectClubsOptions] = useState<
     ISelectOptions[]
   >([]);
-
+  const currentClient = clientID
+    ? selectClientsOptions?.find(
+        (option) => option.value === formData.clientID?.toString()
+      )
+    : undefined;
   useEffect(() => {
     async function fetchData() {
       try {
-        const [tariffs, clubs] = await Promise.all([getTariffs(), getClubs()]);
-        if (!(tariffs instanceof Error)) {
+        const [tariffs, clubs, clients] = await Promise.all([
+          getTariffs(),
+          getClubs(),
+          getTrainerClients(),
+        ]);
+        if (
+          !(
+            tariffs instanceof Error ||
+            clubs instanceof Error ||
+            clients instanceof Error
+          )
+        ) {
           setTariffs(tariffs);
+          setSelectClientsOptions((prev) =>
+            clients.map((item) => ({
+              label: item.name + " " + item.surname,
+              value: item.id.toString(),
+            }))
+          );
           setSelectTariffsOptions(
             tariffs.map((item) => ({
               label: `${
@@ -95,7 +117,7 @@ export const CreateSubscription = ({
   }, []);
 
   const handleSelectChange =
-    (key: "clubID" | "tariffID") => (value: string) => {
+    (key: "clubID" | "tariffID" | "clientID") => (value: string) => {
       if (key === "tariffID") {
         const selectTariff = tariffs?.find(
           (item) => item.id.toString() === value
@@ -174,7 +196,7 @@ export const CreateSubscription = ({
       const response = await postSubscription(
         formData,
         trainings,
-        clientID,
+        clientID!,
         selectedSlots
       );
       if (response instanceof Error) {
@@ -216,6 +238,22 @@ export const CreateSubscription = ({
               showSearch
               placeholder="Выберите тариф"
               style={{ width: "100%" }}
+            />
+          </Form.Item>
+          <Form.Item label="Клиент:" style={{ width: "100%" }}>
+            <Select
+              onChange={handleSelectChange("clientID")}
+              style={{ width: "100%" }}
+              showSearch
+              value={
+                formData.clientID ? currentClient?.label?.toString() : null
+              }
+              filterOption={customFilterOption}
+              filterSort={customFilterSort}
+              options={selectClientsOptions}
+              defaultValue={currentClient?.label?.toString()}
+              size="middle"
+              placeholder="Выберите клиента"
             />
           </Form.Item>
           <Form.Item label="Зал:" style={{ width: "100%" }}>
