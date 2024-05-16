@@ -89,9 +89,7 @@ export const CreateSubscription = ({
             }))
           );
         }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
+      } catch (error) {}
     }
     fetchData();
   }, []);
@@ -157,7 +155,6 @@ export const CreateSubscription = ({
           return newSlots;
         });
       } else {
-        console.error("Error loading slots:", slots);
       }
     }
 

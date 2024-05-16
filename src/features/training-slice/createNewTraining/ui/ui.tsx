@@ -54,6 +54,7 @@ export const CreateNewTraining = ({
           editTrainingData.transaction.tariff.id ||
           null,
         clubID: editTrainingData.club.id,
+        date: editTrainingData.date,
         dateInput: editTrainingData?.date
           ? dayjs(editTrainingData?.date, "YYYY-MM-DD")
           : null,

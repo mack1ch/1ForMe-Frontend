@@ -24,7 +24,7 @@ export const WorkTimeButton = () => {
     });
     return count;
   }
-  console.log(slots);
+
 
   return (
     <>
