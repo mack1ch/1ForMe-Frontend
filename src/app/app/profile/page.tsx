@@ -15,7 +15,7 @@ export default function Home() {
       </PageHeader>
       <PageLayout>
         <ProfileCard />
-        <ClientRecord />
+        {/* <ClientRecord /> */}
         <TariffCard />
       </PageLayout>
     </>

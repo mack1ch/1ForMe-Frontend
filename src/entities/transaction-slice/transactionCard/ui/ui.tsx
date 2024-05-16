@@ -1,8 +1,7 @@
-import Image from "next/image";
 import styles from "./ui.module.scss";
-import Divider from "../../../../../public/assets/divider.svg";
 import { ITransaction } from "@/shared/interface/transaction";
 import { DashDivider } from "@/shared/ui/divider-slice/dashDivider/ui/ui";
+
 export const TransactionCard = ({
   isLast = false,
   transaction,
