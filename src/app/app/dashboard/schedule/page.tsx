@@ -9,7 +9,7 @@ export default function Home() {
   const router = useRouter();
   return (
     <>
-      <PageHeader onBack={() => router.back()}>Расписание студий</PageHeader>
+      <PageHeader onBack={() => router.back()}>Расписание</PageHeader>
       <PageLayout>
         <TabClubs />
       </PageLayout>
