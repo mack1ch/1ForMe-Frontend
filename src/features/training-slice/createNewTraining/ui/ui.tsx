@@ -382,7 +382,11 @@ export const CreateNewTraining = ({
               htmlType="submit"
               onClick={handleCreateTraining}
               loading={isButtonLoading}
-              disabled={!editTrainingData && isButtonDisabled}
+              disabled={
+                timeUntilTraining === "Тренировка уже началась или прошла"
+                  ? true
+                  : !editTrainingData && isButtonDisabled
+              }
               style={{ width: "100%" }}
               type="primary"
               size="large"

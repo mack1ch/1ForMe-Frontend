@@ -7,17 +7,14 @@ import { ClientSubscriptionTraining } from "@/shared/ui/client-slice/clientSubsc
 import { ISubscription } from "@/shared/interface/subscriptions";
 import { convertToCurrencyFormat } from "@/shared/lib/parse/money";
 import { parseDateToDateAndMonth } from "@/shared/lib/parse/date";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
 export const ClientSubscriptionCard = ({
   subscription,
 }: {
   subscription: ISubscription;
 }) => {
-  const router = useRouter();
   const [isCardOpen, setCardOpen] = useState(false);
   const { day, month, dayOfWeek } = parseDateToDateAndMonth(
-    subscription.nextTraining.date.toString()
+    subscription.nextTraining?.date.toString()
   );
   return (
     <>
