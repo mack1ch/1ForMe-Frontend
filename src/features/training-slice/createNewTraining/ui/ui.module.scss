@@ -41,12 +41,29 @@
       border-radius: 64px;
     }
   }
-  .h5 {
-    color: #f36c6c;
-    font-size: 18px;
-    text-align: center;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
+  .time {
+    border-radius: 15px;
+    border: 1px dashed #bfbfbf;
+    display: flex;
+    padding: 16px 24px;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-wrap: nowrap;
+    .p {
+      color: #000;
+
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 135%;
+      .strong {
+        color: #000;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 135%;
+      }
+    }
   }
 }

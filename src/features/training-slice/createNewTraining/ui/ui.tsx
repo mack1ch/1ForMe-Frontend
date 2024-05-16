@@ -2,6 +2,7 @@ import { Button, Form, message, Select, TimePickerProps } from "antd";
 import styles from "./ui.module.scss";
 import { DatePicker } from "antd";
 import { useEffect, useState } from "react";
+import Timer from "../../../../../public/icons/trainings/timer.svg";
 import { IUser } from "@/shared/interface/user";
 import {
   changeTraining,
@@ -16,6 +17,7 @@ import {
   customFilterOption,
   customFilterSort,
   findOptionById,
+  formatDayCount,
   formatHoursCount,
   formatMinutesCount,
   parseDateTime,
@@ -25,6 +27,7 @@ import { IClubSlot } from "@/shared/interface/slots";
 import dayjs from "dayjs";
 import { ITraining } from "@/shared/interface/training";
 import { formatDateToDayAndDateFormat } from "@/shared/lib/parse/date";
+import Image from "next/image";
 
 export const CreateNewTraining = ({
   clientID,
@@ -76,10 +79,15 @@ export const CreateNewTraining = ({
           (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
         );
         const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+
+        // setTimeUntilTraining(
+        //   `${days !== 0 ? formatDayCount(days) + "," : ""} ${
+        //     hours !== 0 ? formatHoursCount(hours) + "," : ""
+        //   } ${formatMinutesCount(minutes)} до начала тренировки`)
         setTimeUntilTraining(
-          `${days !== 0 ? days + "дней," : ""} ${
-            hours !== 0 ? formatHoursCount(hours) + "," : ""
-          } ${formatMinutesCount(minutes)} до начала тренировки`
+          `${days !== 0 && formatDayCount(days) + ","} ${
+            minutes !== 0 && formatHoursCount(minutes)
+          } ${days == 0 && minutes == 0 ? formatMinutesCount(minutes) : ""}`
         );
       } else {
         setTimeUntilTraining("Тренировка уже началась или прошла");
@@ -375,6 +383,23 @@ export const CreateNewTraining = ({
             style={{
               width: "100%",
               textAlign: "start",
+              alignItems: "center",
+            }}
+          >
+            {editTrainingData && (
+              <span className={styles.time}>
+                {/* <Image src={Timer} width={22} height={22} alt="Timer" /> */}
+                <p className={styles.p}>
+                  До начала тренировки{" "}
+                  <strong className={styles.strong}>{timeUntilTraining}</strong>
+                </p>
+              </span>
+            )}
+          </Form.Item>
+          <Form.Item
+            style={{
+              width: "100%",
+              textAlign: "start",
               alignItems: "flex-start",
             }}
           >
@@ -395,9 +420,6 @@ export const CreateNewTraining = ({
               Сохранить
             </Button>
           </Form.Item>
-          {editTrainingData && (
-            <h5 className={styles.h5}>{timeUntilTraining}</h5>
-          )}
         </div>
       </Form>
     </>
