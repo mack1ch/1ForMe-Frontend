@@ -12,12 +12,16 @@ import {
   IDoteCount,
   ITraining,
 } from "@/shared/interface/training";
-import { getAuthUser, getTrainersByDate } from "../api";
+import { getAuthUser, getClubs, getTrainersByDate } from "../api";
 import { LackData } from "@/shared/ui/error-slice/lackData";
 import { IUser } from "@/shared/interface/user";
+import { Select } from "antd";
+import { ISelectOptions } from "../interface";
 
 export const Calendar = () => {
   const todayDate = new Date().toISOString();
+  const [selectClubsOptions, setSelectClubsOptions] =
+    useState<ISelectOptions[]>();
   const { day, month, dayOfWeek } = parseDateToDateAndMonth(todayDate);
   const [authUser, setAuthUser] = useState<IUser>();
   const [activeItemIndex, setActiveItemIndex] = useState<number | null>();
@@ -86,9 +90,20 @@ export const Calendar = () => {
       const trainings: ITraining[] | Error = await getTrainersByDate(
         parseTypeDateToDoteFormate(currentDate.toString())
       );
+      const clubs = await getClubs();
       const user = await getAuthUser();
-      if (trainings instanceof Error || user instanceof Error) return;
-
+      if (
+        trainings instanceof Error ||
+        user instanceof Error ||
+        clubs instanceof Error
+      )
+        return;
+      setSelectClubsOptions((prev) =>
+        clubs.map((club) => ({
+          label: club.address + " / " + club.name,
+          value: club.id.toString(),
+        }))
+      );
       setTrainings(trainings);
       setAuthUser(user);
     }
@@ -100,7 +115,15 @@ export const Calendar = () => {
       <div className={styles.layout}>
         <div className={styles.header}>
           <h3 className={styles.h3}>{day + " " + month.name}</h3>
-          <h3 className={styles.h4}>/ {dayOfWeek}</h3>
+          <div className={styles.filter}>
+            <Select
+              placeholder="Фильтр"
+              variant="borderless"
+              style={{ flex: 1, width: "80%" }}
+              options={selectClubsOptions}
+            />
+            <h3 className={styles.h4}>/ {dayOfWeek}</h3>
+          </div>
         </div>
         <CalendarDates
           activeItemIndex={activeItemIndex}

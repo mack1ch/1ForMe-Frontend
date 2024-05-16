@@ -12,6 +12,22 @@
     gap: 8px;
     justify-content: space-between;
     width: 100%;
+    .filter {
+      width: 70%;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+
+      .h3 {
+        color: #000;
+        text-align: center;
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 135%; /* 32.4px */
+        text-wrap: nowrap;
+      }
+    }
     .h3 {
       color: #000;
       text-align: center;

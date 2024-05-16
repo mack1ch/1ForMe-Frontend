@@ -49,7 +49,7 @@ export const TrainingCard = ({
                   </h5>
                   <h5 className={styles.h5}>
                     {training.subscription
-                      ? training?.type?.name
+                      ? training?.subscription.transaction.tariff?.name
                       : training?.type?.name}
                   </h5>
                 </div>
