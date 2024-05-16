@@ -4,18 +4,18 @@ import { CreateNewTraining } from "@/features/training-slice/createNewTraining";
 
 export const DTabItems: ITabItem[] = [
   {
-    title: "Абонемент",
-    content: (
-      <>
-        <CreateSubscription />
-      </>
-    ),
-  },
-  {
     title: "Занятие",
     content: (
       <>
         <CreateNewTraining />
+      </>
+    ),
+  },
+  {
+    title: "Абонемент",
+    content: (
+      <>
+        <CreateSubscription />
       </>
     ),
   },
