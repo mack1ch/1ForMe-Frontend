@@ -48,9 +48,7 @@ export const postSubscription = async (
     const createTrainingDto = trainings.map((item, index) => {
       const slot = item.date && selectedSlots[item.date];
       return {
-        date: convertDateFormatToDoteFormat(
-          item.dateInput?.toISOString() || ""
-        ),
+        date: convertDateFormatToDoteFormat(item.date || ""),
         slot: slot || 0,
         club: formData.clubID || 0,
       };
@@ -77,7 +75,7 @@ export const getSlots = async (
 ): Promise<IClubSlot[] | Error> => {
   try {
     const { data }: { data: IClubSlot[] } = await instanceLogged.get(
-      `/clubs/${clubID}/slots?date==${convertDateFormatToDoteFormat(date)}`
+      `/clubs/${clubID}/slots?date=${convertDateFormatToDoteFormat(date)}`
     );
     return data;
   } catch (error) {

@@ -10,7 +10,6 @@ import {
   dateRange,
   dayParsing,
   dayParsingFromNumberToDayOfWeek,
-  getDayDate,
 } from "../model";
 import { allDays, monthNames } from "../data";
 import { message, Switch } from "antd";

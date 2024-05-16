@@ -4,6 +4,7 @@ import { DatePicker } from "antd";
 import { useEffect, useState } from "react";
 import { IUser } from "@/shared/interface/user";
 import {
+  changeTraining,
   createTraining,
   getClubs,
   getSlots,
@@ -15,12 +16,15 @@ import {
   customFilterOption,
   customFilterSort,
   findOptionById,
+  formatHoursCount,
+  formatMinutesCount,
   parseDateTime,
 } from "../model";
 import { useRouter } from "next/navigation";
 import { IClubSlot } from "@/shared/interface/slots";
 import dayjs from "dayjs";
 import { ITraining } from "@/shared/interface/training";
+import { formatDateToDayAndDateFormat } from "@/shared/lib/parse/date";
 
 export const CreateNewTraining = ({
   clientID,
@@ -50,6 +54,9 @@ export const CreateNewTraining = ({
           editTrainingData.transaction.tariff.id ||
           null,
         clubID: editTrainingData.club.id,
+        dateInput: editTrainingData?.date
+          ? dayjs(editTrainingData?.date, "YYYY-MM-DD")
+          : null,
       }));
     }
   }, [editTrainingData]);
@@ -71,6 +78,37 @@ export const CreateNewTraining = ({
   const router = useRouter();
   const [isButtonLoading, setButtonLoading] = useState<boolean>(false);
   const [isButtonDisabled, setButtonDisabled] = useState<boolean>(true);
+  const [timeUntilTraining, setTimeUntilTraining] = useState<string>("");
+
+  useEffect(() => {
+    const updateCountdown = () => {
+      const currentDate = new Date();
+      const trainingDate = new Date(
+        `${editTrainingData?.date}T${editTrainingData?.slot.beginning}`
+      );
+      if (trainingDate > currentDate) {
+        const diff = trainingDate.getTime() - currentDate.getTime();
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor(
+          (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        );
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+        setTimeUntilTraining(
+          `${days} дней, ${formatHoursCount(hours)}, ${formatMinutesCount(
+            minutes
+          )} до начала тренировки`
+        );
+      } else {
+        setTimeUntilTraining("Тренировка уже началась или прошла");
+      }
+    };
+
+    updateCountdown();
+    const interval = setInterval(updateCountdown, 1000);
+
+    return () => clearInterval(interval);
+  }, [editTrainingData]);
   useEffect(() => {
     setButtonDisabled(!isFormValid(formData));
   }, [formData]);
@@ -154,7 +192,9 @@ export const CreateNewTraining = ({
   const handleCreateTraining = async () => {
     try {
       setButtonLoading(true);
-      const response = await createTraining(formData);
+      const response = editTrainingData
+        ? await changeTraining(formData, editTrainingData.id)
+        : await createTraining(formData);
       if (response instanceof Error) {
         message.open({
           type: "error",
@@ -163,10 +203,16 @@ export const CreateNewTraining = ({
         setButtonLoading(false);
         return;
       } else {
-        router.push(`/app/clients/client/${formData.clientID}`);
+        router.push(`/app/dashboard`);
         message.open({
           type: "success",
-          content: "Тренировка успешно создана",
+          content: `Тренировка успешно ${
+            editTrainingData ? "изменена" : "создана"
+          } на ${formatDateToDayAndDateFormat(
+            response.date.toString().toLowerCase()
+          )}`,
+
+          duration: 4,
         });
         setButtonLoading(false);
       }
@@ -182,7 +228,6 @@ export const CreateNewTraining = ({
   useEffect(() => {
     async function fetchSlots() {
       const slots = await getSlots(formData.date.toString(), formData?.clubID!);
-
       if (slots instanceof Error) return;
       setSlots(slots);
     }
@@ -202,7 +247,6 @@ export const CreateNewTraining = ({
       }));
     }
   }, [date, slots]);
-
   return (
     <>
       <Form style={{ width: "100%" }} name="validateOnly" layout="vertical">
@@ -339,7 +383,7 @@ export const CreateNewTraining = ({
               htmlType="submit"
               onClick={handleCreateTraining}
               loading={isButtonLoading}
-              disabled={isButtonDisabled}
+              disabled={!editTrainingData && isButtonDisabled}
               style={{ width: "100%" }}
               type="primary"
               size="large"
@@ -347,6 +391,7 @@ export const CreateNewTraining = ({
               Сохранить
             </Button>
           </Form.Item>
+          <h5 className={styles.h5}>{timeUntilTraining}</h5>
         </div>
       </Form>
     </>

@@ -12,6 +12,7 @@ import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { IClubSlot } from "@/shared/interface/slots";
 import { ISubscription } from "@/shared/interface/subscriptions";
+import { formatDateToDayAndDateFormat } from "@/shared/lib/parse/date";
 
 export const CreateSubscription = ({
   clientID,
@@ -187,10 +188,13 @@ export const CreateSubscription = ({
         setButtonLoading(false);
         return;
       } else {
-        router.push(`/app/clients/client/${clientID}`);
+        router.push(`/app/dashboard`);
         message.open({
           type: "success",
-          content: "Абонемент успешно создан",
+          content: `Абонемент успешно создан на ${formatDateToDayAndDateFormat(
+            response.trainings[0].date.toString().toLowerCase()
+          )}`,
+          duration: 4,
         });
         setButtonLoading(false);
       }

@@ -72,3 +72,25 @@ export const createTraining = async (
     return error as Error;
   }
 };
+
+export const changeTraining = async (
+  training: IFormData,
+  trainingID: number
+): Promise<ITraining | Error> => {
+  try {
+    const { data }: { data: ITraining } = await instanceLogged.patch(
+      `/trainings/${trainingID}`,
+      {
+        slot: training.slotID,
+        date: convertDateFormatToDoteFormat(training.date.toString()),
+        client: training.clientID,
+        type: 1,
+        club: training.clubID,
+        tariff: training.tariffID,
+      }
+    );
+    return data;
+  } catch (error) {
+    return error as Error;
+  }
+};

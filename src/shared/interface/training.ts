@@ -13,7 +13,7 @@ export interface ITraining {
   status: string;
   type: ITrainType;
   isFinished: boolean;
-  date: Date;
+  date: string;
   club: IClub;
   transaction: ITransaction;
 }
