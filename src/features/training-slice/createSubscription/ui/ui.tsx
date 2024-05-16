@@ -226,6 +226,7 @@ export const CreateSubscription = ({ clientID }: { clientID?: number }) => {
       setButtonLoading(false);
     }
   };
+
   return (
     <>
       <Form style={{ width: "100%" }} name="validateOnly" layout="vertical">
@@ -246,9 +247,7 @@ export const CreateSubscription = ({ clientID }: { clientID?: number }) => {
               onChange={handleSelectChange("clientID")}
               style={{ width: "100%" }}
               showSearch
-              value={
-                formData.clientID ? currentClient?.label?.toString() : null
-              }
+              value={clientID ? currentClient?.label?.toString() : undefined}
               filterOption={customFilterOption}
               filterSort={customFilterSort}
               options={selectClientsOptions}
