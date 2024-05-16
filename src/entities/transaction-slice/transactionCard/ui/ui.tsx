@@ -18,8 +18,16 @@ export const TransactionCard = ({
             <h3 className={styles.name}>
               {transaction?.client?.name + " " + transaction?.client?.surname}
             </h3>
-            <h4 className={styles.sport}>
-              {transaction?.training?.transaction?.tariff?.sport?.name}
+            <h4
+              style={{
+                color:
+                  transaction?.status?.toLowerCase() === "не оплачено"
+                    ? "#F36C6C"
+                    : "#6FAE48",
+              }}
+              className={styles.sport}
+            >
+              {transaction.status.toLowerCase()}
             </h4>
           </div>
           <div className={styles.wrap}>

@@ -31,3 +31,9 @@ export interface ISlotsForStudio {
   club: IClub;
   clubSlots: IClubSlot[];
 }
+
+export interface IMainPartWorkTime {
+  slot: IClubSlot[];
+  date: string;
+  count: number;
+}

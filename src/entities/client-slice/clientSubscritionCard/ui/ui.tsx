@@ -110,14 +110,6 @@ export const ClientSubscriptionCard = ({
                   <ClientSubscriptionTraining training={item} key={item.id} />
                 ))}
               </div>
-              {isCardOpen && <DashDivider />}
-
-              <button
-                onClick={() => router.push(`/app/sub/${subscription.id}/edit`)}
-                className={styles.changeButton}
-              >
-                Редактировать
-              </button>
             </div>
           </>
         </article>
@@ -206,8 +198,6 @@ export const ClientSubscriptionCard = ({
                   <ClientSubscriptionTraining training={item} key={item.id} />
                 ))}
               </div>
-              {isCardOpen && <DashDivider />}
-              <button className={styles.changeButton}>Редактировать</button>
             </div>
           </>
         </article>

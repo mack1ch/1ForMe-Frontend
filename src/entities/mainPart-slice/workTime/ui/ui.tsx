@@ -3,12 +3,12 @@ import styles from "./ui.module.scss";
 import Image from "next/image";
 import ChevronRight from "../../../../../public/icons/dashboard/chevronRight.svg";
 import { useEffect, useState } from "react";
-import { ISlotsForStudio } from "@/shared/interface/slots";
+import { IMainPartWorkTime, ISlotsForStudio } from "@/shared/interface/slots";
 import { getSlots } from "../api";
 import { formatDayCount } from "../model";
 
 export const WorkTimeButton = () => {
-  const [slots, setSlots] = useState<ISlotsForStudio[]>();
+  const [slots, setSlots] = useState<IMainPartWorkTime[]>();
   useEffect(() => {
     async function getAllSlots() {
       const fetchSlots = await getSlots();
@@ -17,7 +17,14 @@ export const WorkTimeButton = () => {
     }
     getAllSlots();
   }, []);
-  const countSlots = slots ? 7 - slots?.length : 0;
+  function freeSlots() {
+    let count = 0;
+    slots?.forEach((slot) => {
+      count += slot.count;
+    });
+    return count;
+  }
+
   return (
     <>
       <Link href="/app/dashboard/worktime" className={styles.workTime}>
@@ -26,7 +33,7 @@ export const WorkTimeButton = () => {
           <Image src={ChevronRight} width={20} height={20} alt="Перейти" />
         </div>
         <p className={styles.status}>
-          Свободно {formatDayCount(countSlots)} для записи
+          Свободно {formatDayCount(freeSlots())} для записи
         </p>
       </Link>
     </>
