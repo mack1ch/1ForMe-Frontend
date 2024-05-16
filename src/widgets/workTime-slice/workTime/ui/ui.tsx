@@ -12,11 +12,10 @@ import {
   dayParsingFromNumberToDayOfWeek,
   getDayDate,
 } from "../model";
-import { allDays, dayOrder, monthNames } from "../data";
+import { allDays, monthNames } from "../data";
 import { message, Switch } from "antd";
 import Image from "next/image";
-import { DashDivider } from "@/shared/ui/divider-slice/dashDivider/ui/ui";
-import Plus from "../../../../../public/icons/workTime/Plus.svg";
+import Plus from "../../../../../public/icons/workTime/plus.svg";
 export const WorkTime = () => {
   const [slots, setSlots] = useState<ITrainerSlot[]>([]);
   const [isComponentDisabled, setDisabled] = useState<boolean>(true);
