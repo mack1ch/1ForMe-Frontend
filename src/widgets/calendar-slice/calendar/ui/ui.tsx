@@ -133,7 +133,7 @@ export const Calendar = () => {
               value={currentFilter?.value}
               placeholder="Фильтр"
               variant="borderless"
-              style={{ flex: 1, width: "80%" }}
+              style={{ flex: 1, width: "120px" }}
               options={selectFilterOptions}
               onChange={(value) => setSelectedFilter(value)}
             />
