@@ -383,6 +383,7 @@ export const CreateNewTraining = ({
               onClick={handleCreateTraining}
               loading={isButtonLoading}
               disabled={
+                editTrainingData &&
                 timeUntilTraining === "Тренировка уже началась или прошла"
                   ? true
                   : !editTrainingData && isButtonDisabled
