@@ -27,7 +27,6 @@ import { IClubSlot } from "@/shared/interface/slots";
 import dayjs from "dayjs";
 import { ITraining } from "@/shared/interface/training";
 import { formatDateToDayAndDateFormat } from "@/shared/lib/parse/date";
-import Image from "next/image";
 
 export const CreateNewTraining = ({
   clientID,
@@ -38,6 +37,7 @@ export const CreateNewTraining = ({
   editTrainingData?: ITraining;
   date?: string;
 }) => {
+  const [isTrainingEnd, setIsTrainingEnd] = useState<boolean>(true);
   const [formData, setFormData] = useState<IFormData>({
     date: "",
     slotID: null,
@@ -79,18 +79,17 @@ export const CreateNewTraining = ({
           (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
         );
         const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-
-        // setTimeUntilTraining(
-        //   `${days !== 0 ? formatDayCount(days) + "," : ""} ${
-        //     hours !== 0 ? formatHoursCount(hours) + "," : ""
-        //   } ${formatMinutesCount(minutes)} до начала тренировки`)
+        setIsTrainingEnd(false);
         setTimeUntilTraining(
-          `${days !== 0 && formatDayCount(days) + ","} ${
-            minutes !== 0 && formatHoursCount(minutes)
-          } ${days == 0 && minutes == 0 ? formatMinutesCount(minutes) : ""}`
+          `${days !== 0 ? formatDayCount(days) + "," : ""}
+          ${hours !== 0 ? formatHoursCount(hours) + "," : ""}
+          ${minutes !== 0 ? formatMinutesCount(minutes) : ""} ${
+            days == 0 && minutes == 0 ? formatMinutesCount(minutes) : ""
+          }`
         );
       } else {
-        setTimeUntilTraining("Тренировка уже началась или прошла");
+        setIsTrainingEnd(true);
+        setTimeUntilTraining("Тренировка уже началась или завершена");
       }
     };
 
@@ -388,9 +387,8 @@ export const CreateNewTraining = ({
           >
             {editTrainingData && (
               <span className={styles.time}>
-                
                 <p className={styles.p}>
-                  До начала тренировки{" "}
+                  {!isTrainingEnd && `До начала тренировки${" "}`}
                   <strong className={styles.strong}>{timeUntilTraining}</strong>
                 </p>
               </span>
