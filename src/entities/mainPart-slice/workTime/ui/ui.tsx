@@ -3,7 +3,7 @@ import styles from "./ui.module.scss";
 import Image from "next/image";
 import ChevronRight from "../../../../../public/icons/dashboard/chevronRight.svg";
 import { useEffect, useState } from "react";
-import { IMainPartWorkTime, ISlotsForStudio } from "@/shared/interface/slots";
+import { IMainPartWorkTime } from "@/shared/interface/slots";
 import { getSlots } from "../api";
 import { formatDayCount } from "../model";
 
@@ -24,7 +24,6 @@ export const WorkTimeButton = () => {
     });
     return count;
   }
-
 
   return (
     <>
