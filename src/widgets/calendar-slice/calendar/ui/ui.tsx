@@ -19,9 +19,16 @@ import { Select } from "antd";
 import { ISelectOptions } from "../interface";
 
 export const Calendar = () => {
+  const [selectedFilter, setSelectedFilter] = useState<string | null>("my");
   const todayDate = new Date().toISOString();
-  const [selectClubsOptions, setSelectClubsOptions] =
-    useState<ISelectOptions[]>();
+  const [selectFilterOptions, setSelectFilterOptions] = useState<
+    ISelectOptions[]
+  >([
+    {
+      value: "my",
+      label: "Мои тренировки",
+    },
+  ]);
   const { day, month, dayOfWeek } = parseDateToDateAndMonth(todayDate);
   const [authUser, setAuthUser] = useState<IUser>();
   const [activeItemIndex, setActiveItemIndex] = useState<number | null>();
@@ -98,18 +105,24 @@ export const Calendar = () => {
         clubs instanceof Error
       )
         return;
-      setSelectClubsOptions((prev) =>
-        clubs.map((club) => ({
+      setSelectFilterOptions((prev) => [
+        {
+          value: "my",
+          label: "Мои тренировки",
+        },
+        ...clubs.map((club) => ({
           label: club.address + " / " + club.name,
           value: club.id.toString(),
-        }))
-      );
+        })),
+      ]);
       setTrainings(trainings);
       setAuthUser(user);
     }
     fetchData();
   }, []);
-
+  const currentFilter = selectFilterOptions?.find(
+    (option) => option.value === selectedFilter?.toString()
+  );
   return (
     <>
       <div className={styles.layout}>
@@ -117,10 +130,12 @@ export const Calendar = () => {
           <h3 className={styles.h3}>{day + " " + month.name}</h3>
           <div className={styles.filter}>
             <Select
+              value={currentFilter?.value}
               placeholder="Фильтр"
               variant="borderless"
               style={{ flex: 1, width: "80%" }}
-              options={selectClubsOptions}
+              options={selectFilterOptions}
+              onChange={(value) => setSelectedFilter(value)}
             />
             <h3 className={styles.h4}>/ {dayOfWeek}</h3>
           </div>
@@ -131,7 +146,26 @@ export const Calendar = () => {
           handleDateClick={handleDateClick}
           weekDates={weekDates}
         />
-        {trainings && trainings?.length > 0 ? (
+        {selectedFilter ? (
+          trainings && trainings?.length > 0 ? (
+            trainings
+              .filter((item) =>
+                selectedFilter === "my"
+                  ? item.trainer.id === authUser?.id
+                  : item.club.id ===
+                    (selectedFilter ? parseInt(selectedFilter) : 0)
+              )
+              .map((item) => (
+                <TrainingCard
+                  authTrainer={authUser}
+                  training={item}
+                  key={item.id}
+                />
+              ))
+          ) : (
+            <LackData>Нет занятий</LackData>
+          )
+        ) : trainings && trainings?.length > 0 ? (
           trainings?.map((item) => (
             <TrainingCard
               authTrainer={authUser}
@@ -146,3 +180,4 @@ export const Calendar = () => {
     </>
   );
 };
+1;

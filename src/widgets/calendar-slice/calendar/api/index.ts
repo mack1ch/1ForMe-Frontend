@@ -34,3 +34,4 @@ export const getClubs = async (): Promise<IClub[] | Error> => {
     return error as Error;
   }
 };
+
