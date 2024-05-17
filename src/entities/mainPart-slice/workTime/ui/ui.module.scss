@@ -1,0 +1,38 @@
+.workTime {
+  border-radius: 24px;
+  background: #fff;
+  display: flex;
+  padding: 10px;
+  height: 100px;
+  align-items: flex-start;
+  gap: 8px;
+  width: 49%;
+  flex-direction: column;
+
+  .header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;
+    flex-wrap: nowrap;
+    gap: 4px;
+    .h4 {
+      color: #000;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 17px;
+      max-width: 106px;
+      text-wrap: nowrap;
+    }
+  }
+  .status {
+    margin-top: auto;
+
+    color: #6f757c;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 15px; /* 107.143% */
+  }
+}

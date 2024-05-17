@@ -1,0 +1,124 @@
+.article {
+  display: flex;
+  width: 100%;
+  padding: 16px;
+  align-items: flex-start;
+  gap: 16px;
+  flex-direction: column;
+  border-radius: 12px;
+  background: #fff;
+  transition: all 0.2s;
+  overflow: hidden;
+  .closeWrap {
+    display: flex;
+    width: 100%;
+    align-items: flex-start;
+    height: 44px;
+    justify-content: space-between;
+    .left {
+      width: 80%;
+      height: 100%;
+      display: flex;
+      gap: 12px;
+      .divider {
+        border-radius: 2px;
+        background: #c0c0c0;
+        width: 2px;
+        min-height: 100%;
+      }
+      .info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 4px;
+        flex: 1 0 0;
+        .time {
+          color: #000;
+          font-size: 16px;
+          font-style: normal;
+          font-weight: 700;
+          line-height: 20px;
+        }
+        .address {
+          color: #000;
+          font-size: 14px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: 20px;
+        }
+      }
+    }
+    .icon {
+      width: 24px;
+      height: 24px;
+      position: relative;
+      display: flex;
+      padding: 4px;
+      justify-content: center;
+      align-items: center;
+      border-radius: 10px;
+      background: #f7f7f7;
+      transition: transform 0.2s ease;
+      border: none;
+      .icon__open {
+        transform: rotate(180deg);
+        transition: transform 0.2s ease;
+      }
+      .icon__close {
+        transform: none;
+        transition: transform 0.2s ease;
+      }
+    }
+  }
+  .openWrap {
+    width: 100%;
+    transition: height 0.4s ease;
+    overflow: hidden;
+    .form {
+      display: flex;
+      width: 100%;
+      .formLayout {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 0px;
+        .delete {
+          border-radius: 12px;
+          background: #ffefef;
+          border: none;
+          display: flex;
+          width: 100%;
+          padding: 8px 12px;
+          justify-content: center;
+          align-items: center;
+          gap: 4px;
+          color: #f00;
+          text-align: center;
+          font-size: 16px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: 135%;
+          margin-top: 12px;
+          transition: all 0.2s;
+          &:active {
+            filter: brightness(96%);
+          }
+        }
+        .chooseStudio {
+          display: flex;
+          width: 100%;
+          justify-content: space-between;
+          align-items: center;
+          .label {
+            color: #000;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+          }
+        }
+      }
+    }
+  }
+}

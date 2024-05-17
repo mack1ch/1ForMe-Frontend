@@ -1,0 +1,96 @@
+.article {
+  display: flex;
+  width: 100%;
+  padding: 12px 16px;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 20px;
+  background: #fff;
+  gap: 10px;
+  .leftWrap {
+    display: flex;
+    width: 92%;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+    .trainingInfo {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2px;
+      .h4 {
+        color: #000;
+        text-align: center;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 135%;
+        text-align: left;
+      }
+      .column {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        .h5 {
+          color: #797979;
+          font-size: 12px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: 135%;
+        }
+      }
+    }
+    .training {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 10px;
+
+      .divider {
+        background: #d5cece;
+        width: 1px;
+        height: 24px;
+      }
+      .wrapInfo {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-end;
+        .address {
+          color: #797979;
+          text-align: right;
+          font-size: 12px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: 135%;
+          text-transform: capitalize;
+        }
+        .time {
+          color: #000;
+          text-align: center;
+          font-size: 16px;
+          font-style: normal;
+          font-weight: 600;
+          line-height: 135%;
+          text-transform: capitalize;
+        }
+        .status {
+          color: #9f0000;
+          text-align: right;
+          font-size: 12px;
+          font-style: normal;
+          font-weight: 600;
+          line-height: 135%;
+        }
+      }
+    }
+  }
+  .arrow {
+    display: flex;
+    padding: 4px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    background: #f7f7f7;
+  }
+}

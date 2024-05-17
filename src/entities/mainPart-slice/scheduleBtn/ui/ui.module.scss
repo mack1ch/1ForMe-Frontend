@@ -1,0 +1,39 @@
+.schedule {
+  border-radius: 24px;
+  background: #fff;
+  display: flex;
+  padding: 10px;
+  height: 100px;
+  gap: 8px;
+  align-items: flex-start;
+  flex-direction: column;
+  width: 49%;
+  flex-wrap: nowrap;
+
+  .head {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    .h4 {
+      color: #000;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 17px;
+      max-width: 106px;
+    }
+  }
+  .p {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 100%;
+    color: #6f757c;
+    margin-top: auto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 15px;
+  }
+}
