@@ -3,7 +3,6 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
-
   .subscriptionCostLayout {
     display: flex;
     width: 100%;
@@ -61,7 +60,20 @@
       align-items: flex-start;
       gap: 8px;
       width: 100%;
-
+      .switch {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        .switchLabel {
+          color: #000;
+          text-align: left;
+          font-size: 12px;
+          font-style: normal;
+          font-weight: 200;
+          line-height: normal;
+        }
+      }
       .label {
         color: #000;
         text-align: left;
@@ -69,6 +81,7 @@
         font-style: normal;
         font-weight: 400;
         line-height: normal;
+
         &:first-letter {
           text-transform: uppercase;
         }
@@ -80,5 +93,24 @@
         align-items: center;
       }
     }
+  }
+}
+
+.switchLayout {
+  border-radius: 20px;
+  background: #fff;
+  display: flex;
+  width: 100%;
+  padding: 16px;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  .switchLabel {
+    color: #000;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
   }
 }

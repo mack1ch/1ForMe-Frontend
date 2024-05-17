@@ -1,8 +1,16 @@
-import { Button, DatePicker, Form, message, Select, TimePicker } from "antd";
+import {
+  Button,
+  DatePicker,
+  Form,
+  message,
+  Select,
+  Switch,
+  TimePicker,
+} from "antd";
 import styles from "./ui.module.scss";
 import { DashDivider } from "@/shared/ui/divider-slice/dashDivider/ui/ui";
 import { customFilterOption, customFilterSort } from "../model";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { IFormData, ISelectOptions, ITrainings } from "../interface";
 import {
   getClubs,
@@ -24,6 +32,7 @@ export const CreateSubscription = ({ clientID }: { clientID?: number }) => {
   const router = useRouter();
   const [isButtonLoading, setButtonLoading] = useState<boolean>(false);
   const [isButtonDisabled, setButtonDisabled] = useState<boolean>(true);
+  const [isFirstWorkOut, setIsFirstWorkOut] = useState<boolean>(false);
   const [selectClientsOptions, setSelectClientsOptions] =
     useState<ISelectOptions[]>();
   const [tariffs, setTariffs] = useState<ITariff[]>();
@@ -81,13 +90,19 @@ export const CreateSubscription = ({ clientID }: { clientID?: number }) => {
               value: item.id.toString(),
             }))
           );
+          const filteredTariffs = tariffs.filter(
+            (item) => item.trainingAmount !== 4 && item.trainingAmount !== 9
+          );
+
           setSelectTariffsOptions(
-            tariffs.map((item) => ({
-              label: `${
-                item.name
-              } / ${item.trainingAmount?.toString()} тренировок`,
-              value: item.id.toString(),
-            }))
+            filteredTariffs.map((item) => {
+              return {
+                label: `${
+                  item.name
+                } / ${item.trainingAmount?.toString()} тренировок`,
+                value: item.id.toString(),
+              };
+            })
           );
 
           // Initialize trainings, selectedSlots, and trainingSlots here
@@ -236,7 +251,22 @@ export const CreateSubscription = ({ clientID }: { clientID?: number }) => {
   useEffect(() => {
     setButtonDisabled(!isFormValid(formData));
   }, [formData]);
-  
+
+  const tariffValueIfIsFirstWorkOut =
+    isFirstWorkOut && selectTariff?.trainingAmount
+      ? tariffs?.find(
+          (tariff) =>
+            tariff.trainingAmount === selectTariff.trainingAmount!! - 1
+        )
+      : undefined;
+  useEffect(() => {
+    if (tariffValueIfIsFirstWorkOut) {
+      setFormData((prev) => ({
+        ...prev,
+        tariffID: tariffValueIfIsFirstWorkOut.id,
+      }));
+    }
+  }, [selectTariff, tariffValueIfIsFirstWorkOut]);
   return (
     <>
       <Form style={{ width: "100%" }} name="validateOnly" layout="vertical">
@@ -248,6 +278,14 @@ export const CreateSubscription = ({ clientID }: { clientID?: number }) => {
               filterOption={customFilterOption}
               filterSort={customFilterSort}
               showSearch
+              value={
+                tariffValueIfIsFirstWorkOut
+                  ? tariffValueIfIsFirstWorkOut?.name +
+                    " / " +
+                    tariffValueIfIsFirstWorkOut?.trainingAmount +
+                    "тренировок"
+                  : undefined
+              }
               placeholder="Выберите тариф"
               style={{ width: "100%" }}
             />
@@ -285,6 +323,14 @@ export const CreateSubscription = ({ clientID }: { clientID?: number }) => {
               {selectTariff?.cost && " ₽"}
             </p>
           </div>
+
+          <div className={styles.switchLayout}>
+            <label className={styles.switchLabel}>
+              Включить первую тренировку
+            </label>
+            <Switch onChange={setIsFirstWorkOut} value={isFirstWorkOut} />
+          </div>
+
           {selectTariff?.trainingAmount && (
             <DashDivider style={{ margin: "8px 0" }} />
           )}
@@ -296,6 +342,7 @@ export const CreateSubscription = ({ clientID }: { clientID?: number }) => {
                   <label className={styles.label}>{`${numberToOrdinal(
                     index + 1
                   )} занятие:`}</label>
+
                   <div className={styles.inputLayout}>
                     <DatePicker
                       inputReadOnly

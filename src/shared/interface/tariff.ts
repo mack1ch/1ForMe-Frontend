@@ -5,7 +5,6 @@ export interface ITariff {
   name: string;
   cost: number;
   sport: ISport;
-  
   duration: string;
   trainingAmount?: number;
 }
