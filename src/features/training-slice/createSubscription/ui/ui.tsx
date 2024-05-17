@@ -23,6 +23,7 @@ export const CreateSubscription = ({ clientID }: { clientID?: number }) => {
   const dateFormat = "DD.MM.YYYY";
   const router = useRouter();
   const [isButtonLoading, setButtonLoading] = useState<boolean>(false);
+  const [isButtonDisabled, setButtonDisabled] = useState<boolean>(true);
   const [selectClientsOptions, setSelectClientsOptions] =
     useState<ISelectOptions[]>();
   const [tariffs, setTariffs] = useState<ITariff[]>();
@@ -225,7 +226,16 @@ export const CreateSubscription = ({ clientID }: { clientID?: number }) => {
       setButtonLoading(false);
     }
   };
-  console.log(formData.clientID);
+  const isFormValid = (formData: IFormData): boolean => {
+    return (
+      formData.clientID !== "" &&
+      formData.tariffID !== null &&
+      formData.clubID !== null
+    );
+  };
+  useEffect(() => {
+    setButtonDisabled(!isFormValid(formData));
+  }, [formData]);
   return (
     <>
       <Form style={{ width: "100%" }} name="validateOnly" layout="vertical">
@@ -334,6 +344,7 @@ export const CreateSubscription = ({ clientID }: { clientID?: number }) => {
             )}
           </div>
           <Button
+            disabled={isButtonDisabled}
             loading={isButtonLoading}
             onClick={handleCreateSubscription}
             htmlType="submit"

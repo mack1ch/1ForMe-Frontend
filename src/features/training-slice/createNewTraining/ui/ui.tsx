@@ -2,7 +2,7 @@ import { Button, Form, message, Select, TimePickerProps } from "antd";
 import styles from "./ui.module.scss";
 import { DatePicker } from "antd";
 import { useEffect, useState } from "react";
-import Timer from "../../../../../public/icons/trainings/timer.svg";
+
 import { IUser } from "@/shared/interface/user";
 import {
   changeTraining,
@@ -176,6 +176,12 @@ export const CreateNewTraining = ({
       date: dateString,
       dateInput: date,
     }));
+    async function fetchSlots() {
+      const slots = await getSlots(formData.date.toString(), formData?.clubID!);
+      if (slots instanceof Error) return;
+      setSlots(slots);
+    }
+    fetchSlots();
   };
 
   const onHandleClientChange = (value: string) => {
@@ -232,14 +238,6 @@ export const CreateNewTraining = ({
     }
   };
 
-  useEffect(() => {
-    async function fetchSlots() {
-      const slots = await getSlots(formData.date.toString(), formData?.clubID!);
-      if (slots instanceof Error) return;
-      setSlots(slots);
-    }
-    fetchSlots();
-  }, [formData.clubID, formData.date]);
   useEffect(() => {
     if (date) {
       const parsedDate = parseDateTime(date);
@@ -350,35 +348,37 @@ export const CreateNewTraining = ({
               style={{ width: "100%", fontSize: "16px" }}
             />
           </Form.Item>
-          <Form.Item
-            label="Время занятия:"
-            style={{
-              width: "100%",
-              textAlign: "start",
-              alignItems: "flex-start",
-            }}
-          >
-            <div className={styles.slotWrap}>
-              {slots?.map((slot) => {
-                if (slot.isAvailable) {
-                  return (
-                    <button
-                      onClick={() => handleSlotSelection(slot.id)}
-                      key={slot.id}
-                      style={{
-                        background: formData.slotID === slot.id ? "#000" : "",
-                        color: formData.slotID === slot.id ? "#fff" : "",
-                      }}
-                      className={styles.slot}
-                    >
-                      {slot.beginning}
-                    </button>
-                  );
-                }
-                return null;
-              })}
-            </div>
-          </Form.Item>
+          {slots && (
+            <Form.Item
+              label="Время занятия:"
+              style={{
+                width: "100%",
+                textAlign: "start",
+                alignItems: "flex-start",
+              }}
+            >
+              <div className={styles.slotWrap}>
+                {slots?.map((slot) => {
+                  if (slot.isAvailable) {
+                    return (
+                      <button
+                        onClick={() => handleSlotSelection(slot.id)}
+                        key={slot.id}
+                        style={{
+                          background: formData.slotID === slot.id ? "#000" : "",
+                          color: formData.slotID === slot.id ? "#fff" : "",
+                        }}
+                        className={styles.slot}
+                      >
+                        {slot.beginning}
+                      </button>
+                    );
+                  }
+                  return null;
+                })}
+              </div>
+            </Form.Item>
+          )}
           {editTrainingData && (
             <Form.Item
               style={{
