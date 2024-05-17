@@ -58,9 +58,7 @@ export const CreateNewTraining = ({
   const defaultClient = selectClientsOptions?.find(
     (option) => option.value === clientID?.toString()
   );
-  const currentClient = selectClientsOptions?.find(
-    (option) => option.value === formData.clientID?.toString()
-  );
+
   const router = useRouter();
   const [isButtonLoading, setButtonLoading] = useState<boolean>(false);
   const [isButtonDisabled, setButtonDisabled] = useState<boolean>(true);
@@ -95,9 +93,9 @@ export const CreateNewTraining = ({
 
     updateCountdown();
     const interval = setInterval(updateCountdown, 1000);
-
     return () => clearInterval(interval);
   }, [editTrainingData]);
+
   useEffect(() => {
     setButtonDisabled(!isFormValid(formData));
   }, [formData]);
@@ -105,8 +103,8 @@ export const CreateNewTraining = ({
     if (editTrainingData) {
       setFormData((prev) => ({
         ...prev,
-        slotID: editTrainingData?.slot.id || null,
         clientID: editTrainingData.client.id || null,
+        slotID: editTrainingData?.slot.id || null,
         tariffID:
           editTrainingData?.subscription?.transaction?.tariff?.id ||
           editTrainingData.transaction.tariff.id ||
@@ -119,6 +117,9 @@ export const CreateNewTraining = ({
       }));
     }
   }, [editTrainingData]);
+  const currentClient = selectClientsOptions?.find(
+    (option) => option.value === formData.clientID?.toString()
+  );
   const isFormValid = (formData: IFormData): boolean => {
     return (
       formData.date !== "" &&
@@ -378,22 +379,22 @@ export const CreateNewTraining = ({
               })}
             </div>
           </Form.Item>
-          <Form.Item
-            style={{
-              width: "100%",
-              textAlign: "start",
-              alignItems: "center",
-            }}
-          >
-            {editTrainingData && (
+          {editTrainingData && (
+            <Form.Item
+              style={{
+                width: "100%",
+                textAlign: "start",
+                alignItems: "center",
+              }}
+            >
               <span className={styles.time}>
                 <p className={styles.p}>
-                  {!isTrainingEnd && `До начала тренировки${" "}`}
+                  {!isTrainingEnd && `Тренировка через${" "}`}
                   <strong className={styles.strong}>{timeUntilTraining}</strong>
                 </p>
               </span>
-            )}
-          </Form.Item>
+            </Form.Item>
+          )}
           <Form.Item
             style={{
               width: "100%",
@@ -407,7 +408,7 @@ export const CreateNewTraining = ({
               loading={isButtonLoading}
               disabled={
                 editTrainingData &&
-                timeUntilTraining === "Тренировка уже началась или прошла"
+                timeUntilTraining === "Тренировка уже началась или завершена"
                   ? true
                   : !editTrainingData && isButtonDisabled
               }

@@ -27,7 +27,7 @@ export default function Home({ params }: { params: { id: number } }) {
     <>
       <PageHeader onBack={() => router.back()}>Занятие</PageHeader>
       <PageLayout isMargin>
-        <CreateNewTraining editTrainingData={training} clientID={params.id} />
+        <CreateNewTraining editTrainingData={training} />
       </PageLayout>
     </>
   );

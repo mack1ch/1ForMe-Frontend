@@ -54,7 +54,7 @@ export function formatHoursCount(count: number): string {
 
 export function formatMinutesCount(count: number): string {
   const cases = [2, 0, 1, 1, 1, 2];
-  const titles = ["минута", "минуты", "минут"];
+  const titles = ["мин", "мин", "мин"];
   return `${count} ${
     titles[
       count % 100 > 4 && count % 100 < 20 ? 2 : cases[Math.min(count % 10, 5)]
