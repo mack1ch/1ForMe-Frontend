@@ -27,6 +27,8 @@ import { IClubSlot } from "@/shared/interface/slots";
 import dayjs from "dayjs";
 import { ITraining } from "@/shared/interface/training";
 import { formatDateToDayAndDateFormat } from "@/shared/lib/parse/date";
+import { ITariff } from "@/shared/interface/tariff";
+import { convertToCurrencyFormat } from "@/shared/lib/parse/money";
 
 export const CreateNewTraining = ({
   clientID,
@@ -38,6 +40,7 @@ export const CreateNewTraining = ({
   date?: string;
 }) => {
   const [isTrainingEnd, setIsTrainingEnd] = useState<boolean>(true);
+  const [tariffArray, setTariffArray] = useState<ITariff[]>();
   const [formData, setFormData] = useState<IFormData>({
     date: "",
     slotID: null,
@@ -120,6 +123,13 @@ export const CreateNewTraining = ({
   const currentClient = selectClientsOptions?.find(
     (option) => option.value === formData.clientID?.toString()
   );
+  const currentTariff = selectTariffsOptions?.find(
+    (option) => option.value === formData.tariffID?.toString()
+  );
+  const selectTariffInArray = tariffArray?.find(
+    (option) => option.id.toString() === formData.tariffID
+  );
+
   const isFormValid = (formData: IFormData): boolean => {
     return (
       formData.date !== "" &&
@@ -147,7 +157,7 @@ export const CreateNewTraining = ({
         clubs instanceof Error
       )
         return;
-
+      setTariffArray(tariffs);
       setSelectTariffsOptions((prev) =>
         tariffs.map((item) => ({
           label: item.name,
@@ -190,6 +200,14 @@ export const CreateNewTraining = ({
       clientID: value,
     }));
   };
+
+  const onHandleClientMultiplyChange = (value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      clientID: value,
+    }));
+  };
+
   const onHandleTariffChange = (value: string) => {
     setFormData((prev) => ({
       ...prev,
@@ -252,6 +270,7 @@ export const CreateNewTraining = ({
       }));
     }
   }, [date, slots]);
+
   return (
     <>
       <Form style={{ width: "100%" }} name="validateOnly" layout="vertical">
@@ -286,14 +305,22 @@ export const CreateNewTraining = ({
             }}
           >
             <Select
-              onChange={onHandleClientChange}
+              mode={currentTariff?.label === "Сплит" ? "multiple" : undefined}
+              onChange={
+                currentTariff?.label === "Сплит"
+                  ? onHandleClientMultiplyChange
+                  : onHandleClientChange
+              }
               style={{ width: "100%" }}
               showSearch
               filterOption={customFilterOption}
               filterSort={customFilterSort}
               options={selectClientsOptions}
+              maxCount={2}
               value={
-                editTrainingData
+                currentTariff?.label === "Сплит"
+                  ? undefined
+                  : editTrainingData
                   ? findOptionById(
                       formData.clientID?.toString() || null,
                       selectClientsOptions
@@ -349,35 +376,26 @@ export const CreateNewTraining = ({
             />
           </Form.Item>
           {slots && (
-            <Form.Item
-              label="Время занятия:"
-              style={{
-                width: "100%",
-                textAlign: "start",
-                alignItems: "flex-start",
-              }}
-            >
-              <div className={styles.slotWrap}>
-                {slots?.map((slot) => {
-                  if (slot.isAvailable) {
-                    return (
-                      <button
-                        onClick={() => handleSlotSelection(slot.id)}
-                        key={slot.id}
-                        style={{
-                          background: formData.slotID === slot.id ? "#000" : "",
-                          color: formData.slotID === slot.id ? "#fff" : "",
-                        }}
-                        className={styles.slot}
-                      >
-                        {slot.beginning}
-                      </button>
-                    );
-                  }
-                  return null;
-                })}
-              </div>
-            </Form.Item>
+            <div className={styles.slotWrap}>
+              {slots?.map((slot) => {
+                if (slot.isAvailable) {
+                  return (
+                    <button
+                      onClick={() => handleSlotSelection(slot.id)}
+                      key={slot.id}
+                      style={{
+                        background: formData.slotID === slot.id ? "#000" : "",
+                        color: formData.slotID === slot.id ? "#fff" : "",
+                      }}
+                      className={styles.slot}
+                    >
+                      {slot.beginning}
+                    </button>
+                  );
+                }
+                return null;
+              })}
+            </div>
           )}
           {editTrainingData && (
             <Form.Item
@@ -395,6 +413,16 @@ export const CreateNewTraining = ({
               </span>
             </Form.Item>
           )}
+          <div className={styles.trainingCostLayout}>
+            <label className={styles.label}>Стоимость тренировки:</label>
+            <p className={styles.cost}>
+              {selectTariffInArray?.cost &&
+                convertToCurrencyFormat(
+                  selectTariffInArray?.cost.toString() || ""
+                )}
+              {selectTariffInArray?.cost && " ₽"}
+            </p>
+          </div>
           <Form.Item
             style={{
               width: "100%",

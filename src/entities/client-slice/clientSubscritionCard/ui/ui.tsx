@@ -48,7 +48,7 @@ export const ClientSubscriptionCard = ({
               <div className={styles.costAndStatus}>
                 <h4 className={styles.h4}>
                   {convertToCurrencyFormat(
-                    subscription.transaction.tariff.cost.toString()
+                    subscription.transaction?.tariff?.cost?.toString()
                   ) + " ₽"}
                 </h4>
                 <p className={styles.p}>{subscription.transaction.status}</p>
@@ -90,16 +90,20 @@ export const ClientSubscriptionCard = ({
                 </h5>
                 <h5 className={styles.h5}>
                   {Math.round(
-                    subscription.transaction.tariff.cost /
+                    subscription?.transaction?.tariff?.cost /
                       subscription?.trainings?.length
                   )}
                   ₽ × {subscription.trainings?.length} занятий:{" "}
                   <strong className={styles.strong}>
                     {" "}
                     {convertToCurrencyFormat(
-                      subscription.transaction.tariff.cost.toString()
+                      subscription?.transaction?.tariff?.cost?.toString()
                     ) + " ₽"}{" "}
                   </strong>
+                </h5>
+                <h5 className={styles.h5}>
+                  До конца абонемента осталось:{" "}
+                  <strong className={styles.strong}>12 дней</strong>
                 </h5>
               </div>
               <div className={styles.trainingTags}>
@@ -189,6 +193,7 @@ export const ClientSubscriptionCard = ({
                     ) + " ₽"}{" "}
                   </strong>
                 </h5>
+                <h5 className={styles.h5}>До конца абонемента осталось</h5>
               </div>
               <div className={styles.trainingTags}>
                 {subscription.trainings?.map((item) => (

@@ -236,6 +236,7 @@ export const CreateSubscription = ({ clientID }: { clientID?: number }) => {
   useEffect(() => {
     setButtonDisabled(!isFormValid(formData));
   }, [formData]);
+  
   return (
     <>
       <Form style={{ width: "100%" }} name="validateOnly" layout="vertical">
