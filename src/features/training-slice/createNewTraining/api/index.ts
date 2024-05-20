@@ -56,6 +56,7 @@ export const createTraining = async (
   training: IFormData
 ): Promise<ITraining | Error> => {
   try {
+    console.log(training);
     const { data }: { data: ITraining } = await instanceLogged.post(
       `/trainings`,
       {
@@ -65,6 +66,7 @@ export const createTraining = async (
         type: 1,
         club: training.clubID,
         tariff: training.tariffID,
+        clientsAmount: training.clientID?.length,
       }
     );
     return data;

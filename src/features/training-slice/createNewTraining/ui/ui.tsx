@@ -29,6 +29,7 @@ import { ITraining } from "@/shared/interface/training";
 import { formatDateToDayAndDateFormat } from "@/shared/lib/parse/date";
 import { ITariff } from "@/shared/interface/tariff";
 import { convertToCurrencyFormat } from "@/shared/lib/parse/money";
+import { RangePickerProps } from "antd/es/date-picker";
 
 export const CreateNewTraining = ({
   clientID,
@@ -45,7 +46,7 @@ export const CreateNewTraining = ({
     date: "",
     slotID: null,
     dateInput: null,
-    clientID: clientID || null,
+    clientID: clientID ? [clientID] : null,
     tariffID: null,
     clubID: null,
   });
@@ -106,7 +107,7 @@ export const CreateNewTraining = ({
     if (editTrainingData) {
       setFormData((prev) => ({
         ...prev,
-        clientID: editTrainingData.client.id || null,
+        clientID: [editTrainingData.client.id] || null,
         slotID: editTrainingData?.slot.id || null,
         tariffID:
           editTrainingData?.subscription?.transaction?.tariff?.id ||
@@ -193,15 +194,32 @@ export const CreateNewTraining = ({
     }
     fetchSlots();
   };
+  useEffect(() => {
+    async function fetchSlots() {
+      const slots =
+        formData.date &&
+        (await getSlots(formData.date.toString(), formData?.clubID!));
+      if (slots instanceof Error || !slots) return;
+      setSlots(slots);
+    }
+
+    fetchSlots();
+  }, [formData?.clubID, formData.date]);
 
   const onHandleClientChange = (value: string) => {
     setFormData((prev) => ({
       ...prev,
-      clientID: value,
+      clientID: [value],
     }));
   };
 
+  const disabledDate: RangePickerProps["disabledDate"] = (current) => {
+    // Can not select days before today and today
+    return current && current < dayjs().startOf("day");
+  };
+
   const onHandleClientMultiplyChange = (value: string) => {
+    // @ts-ignore
     setFormData((prev) => ({
       ...prev,
       clientID: value,
@@ -263,7 +281,7 @@ export const CreateNewTraining = ({
         ...prev,
         date: parsedDate[0].formatDate,
         dateInput: dayjs(parsedDate[0].formatDate, "DD.MM.YYYY"),
-        clientID: parsedDate[0].formatClubID,
+        clubID: parsedDate[0].formatClubID,
         slotID:
           slots?.find((slot) => slot.beginning === parsedDate[0].formatTime)
             ?.id || null,
@@ -316,7 +334,7 @@ export const CreateNewTraining = ({
               filterOption={customFilterOption}
               filterSort={customFilterSort}
               options={selectClientsOptions}
-              maxCount={2}
+              maxCount={currentClient?.label === "Сплит" ? 2 : undefined}
               value={
                 currentTariff?.label === "Сплит"
                   ? undefined
@@ -369,6 +387,7 @@ export const CreateNewTraining = ({
             <DatePicker
               format={dateFormat}
               inputReadOnly
+              disabledDate={disabledDate}
               onChange={handleDateChange}
               value={formData.dateInput}
               placeholder="Дата тренировки"
