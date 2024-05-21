@@ -1,4 +1,5 @@
 import { ISport } from "./sport";
+import { IStudio } from "./studio";
 
 export interface ITariff {
   id: number;
@@ -7,4 +8,8 @@ export interface ITariff {
   sport: ISport;
   duration: string;
   trainingAmount?: number;
+  subExpireAt?: number; // Длительность абонемента
+  clientsAmount: number;
+  studio: IStudio;
+  category: string;
 }

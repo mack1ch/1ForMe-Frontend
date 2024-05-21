@@ -54,10 +54,9 @@ export const getSlots = async (
 
 export const createTraining = async (
   training: IFormData
-): Promise<ITraining | Error> => {
+): Promise<ITraining[] | Error> => {
   try {
-    console.log(training);
-    const { data }: { data: ITraining } = await instanceLogged.post(
+    const { data }: { data: ITraining[] } = await instanceLogged.post(
       `/trainings`,
       {
         slot: training.slotID,
@@ -78,9 +77,9 @@ export const createTraining = async (
 export const changeTraining = async (
   training: IFormData,
   trainingID: number
-): Promise<ITraining | Error> => {
+): Promise<ITraining[] | Error> => {
   try {
-    const { data }: { data: ITraining } = await instanceLogged.patch(
+    const { data }: { data: ITraining[] } = await instanceLogged.patch(
       `/trainings/${trainingID}`,
       {
         slot: training.slotID,

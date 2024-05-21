@@ -62,7 +62,6 @@ export const CreateNewTraining = ({
   const defaultClient = selectClientsOptions?.find(
     (option) => option.value === clientID?.toString()
   );
-
   const router = useRouter();
   const [isButtonLoading, setButtonLoading] = useState<boolean>(false);
   const [isButtonDisabled, setButtonDisabled] = useState<boolean>(true);
@@ -127,6 +126,7 @@ export const CreateNewTraining = ({
   const currentTariff = selectTariffsOptions?.find(
     (option) => option.value === formData.tariffID?.toString()
   );
+
   const selectTariffInArray = tariffArray?.find(
     (option) => option.id.toString() === formData.tariffID
   );
@@ -158,6 +158,7 @@ export const CreateNewTraining = ({
         clubs instanceof Error
       )
         return;
+
       setTariffArray(tariffs);
       setSelectTariffsOptions((prev) =>
         tariffs.map((item) => ({
@@ -258,7 +259,7 @@ export const CreateNewTraining = ({
           content: `Тренировка успешно ${
             editTrainingData ? "изменена" : "создана"
           } на ${formatDateToDayAndDateFormat(
-            response.date.toString().toLowerCase()
+            response[0].date.toString().toLowerCase()
           )}`,
 
           duration: 4,
@@ -334,7 +335,12 @@ export const CreateNewTraining = ({
               filterOption={customFilterOption}
               filterSort={customFilterSort}
               options={selectClientsOptions}
-              maxCount={currentClient?.label === "Сплит" ? 2 : undefined}
+              maxCount={
+                currentTariff?.label === "Сплит" &&
+                selectTariffInArray?.clientsAmount
+                  ? selectTariffInArray.clientsAmount
+                  : undefined
+              }
               value={
                 currentTariff?.label === "Сплит"
                   ? undefined
