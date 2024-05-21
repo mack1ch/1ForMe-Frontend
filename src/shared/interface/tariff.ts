@@ -11,5 +11,5 @@ export interface ITariff {
   subExpireAt?: number; // Длительность абонемента
   clientsAmount: number;
   studio: IStudio;
-  category: string;
+  trainerCategory: string;
 }

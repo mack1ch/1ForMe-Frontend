@@ -11,6 +11,7 @@ import {
   getMonthNameByMonthNumberWithEnds,
 } from "@/shared/lib/parse/date";
 import { convertToCurrencyFormat } from "@/shared/lib/parse/money";
+import { LackData } from "@/shared/ui/error-slice/lackData";
 
 export const Statistics = ({
   period = "day",
@@ -49,7 +50,7 @@ export const Statistics = ({
       activeItemIndex < 0 ||
       activeItemIndex >= analytics.length
     ) {
-      return "Секунду...";
+      return "отсутствует";
     }
 
     const activeItem = analytics[activeItemIndex];
@@ -75,36 +76,40 @@ export const Statistics = ({
 
   return (
     <>
-      <section className={styles.layout}>
-        <div className={styles.header}>
-          <h2 className={styles.totalMoney}>
-            {analytics &&
-              convertToCurrencyFormat(
-                analytics[activeItemIndex]?.costSum.toString()
-              )}
-            ₽
-          </h2>
-          <h4 className={styles.date}>
-            {analytics &&
-              period &&
-              `Доход ${getIncomeByPeriod().toLowerCase()}
+      {analytics && analytics?.length ? (
+        <section className={styles.layout}>
+          <div className={styles.header}>
+            <h2 className={styles.totalMoney}>
+              {analytics &&
+                convertToCurrencyFormat(
+                  analytics[activeItemIndex]?.costSum.toString()
+                ) &&
+                "₽"}
+            </h2>
+            <h4 className={styles.date}>
+              {analytics &&
+                period &&
+                `Доход ${getIncomeByPeriod().toLowerCase()}
 `}
-          </h4>
-        </div>
-        <div className={styles.graphLayout}>
-          {analytics?.map((item, index) => (
-            <StatisticsGraphItem
-              period={period}
-              index={index}
-              handleSetActive={handleItemClick}
-              isActive={activeItemIndex === index}
-              maxCost={maxCost}
-              analytics={item}
-              key={item.day}
-            />
-          ))}
-        </div>
-      </section>
+            </h4>
+          </div>
+          <div className={styles.graphLayout}>
+            {analytics?.map((item, index) => (
+              <StatisticsGraphItem
+                period={period}
+                index={index}
+                handleSetActive={handleItemClick}
+                isActive={activeItemIndex === index}
+                maxCost={maxCost}
+                analytics={item}
+                key={item.day}
+              />
+            ))}
+          </div>
+        </section>
+      ) : (
+        <LackData>Нет доходов</LackData>
+      )}
     </>
   );
 };
