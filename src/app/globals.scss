@@ -15,7 +15,15 @@ body {
 }
 
 body {
-  background: #f9f9f9;
+  background: #f8f8f8;
+}
+
+.messenger__layout {
+  display: block;
+  width: 100vw;
+  height: calc(100vh - 80px);
+  overflow-y: hidden !important;
+  box-sizing: border-box;
 }
 
 a,
@@ -25,6 +33,8 @@ a:visited {
   text-decoration: none;
   word-wrap: break-word;
 }
+
+
 
 @media (prefers-color-scheme: dark) {
   html {

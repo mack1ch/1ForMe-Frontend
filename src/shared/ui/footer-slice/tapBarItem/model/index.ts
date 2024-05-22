@@ -19,7 +19,7 @@ export const getActiveIconByActiveTitle = (
     case "Клиенты": {
       return FourUsersBlack;
     }
-    case "Мессенджер": {
+    case "Чат": {
       return MessangerBlack;
     }
     case "Профиль": {

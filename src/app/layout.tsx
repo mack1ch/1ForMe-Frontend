@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.scss";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
+import { usePathname } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "1ForMe",

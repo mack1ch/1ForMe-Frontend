@@ -9,7 +9,6 @@ export const MessengerWindow = () => {
   useEffect(() => {
     async function getIFrameLinkByPOSTReq() {
       const link = await getIframeLink();
-      console.log(link);
       if (link instanceof Error) return;
       setIframeLink(link);
     }
@@ -17,7 +16,7 @@ export const MessengerWindow = () => {
   }, []);
   return (
     <>
-      <div style={{ width: "100vw", height: "100svh" }}>
+      <div style={{ width: "100%", height: "100%", display: "flex" }}>
         <iframe src={iframeLink?.url} width="100%" height="100%" />
       </div>
     </>

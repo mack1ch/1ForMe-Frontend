@@ -17,15 +17,16 @@ export const DTapBar: ITapBarItem[] = [
     icon: FourUsers,
   },
   {
+    title: "Чат",
+    path: "/chat/messenger",
+    icon: Messanger,
+  },
+  {
     title: "Аналитика",
     path: "/app/analytics",
     icon: ChartBar,
   },
-  {
-    title: "Мессенджер",
-    path: "/app/messenger",
-    icon: Messanger,
-  },
+
   {
     title: "Профиль",
     path: "/app/profile",
