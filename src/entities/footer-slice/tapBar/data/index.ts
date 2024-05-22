@@ -3,6 +3,8 @@ import Celendar from "../../../../../public/icons/header/calendar-grey.svg";
 import FourUsers from "../../../../../public/icons/header/fourUsers-grey.svg";
 import ChartBar from "../../../../../public/icons/header/chartBar-grey.svg";
 import CircleUser from "../../../../../public/icons/header/userCircle-grey.svg";
+import Messanger from "../../../../../public/icons/header/messanger-grey.svg";
+
 export const DTapBar: ITapBarItem[] = [
   {
     title: "Главная",
@@ -18,6 +20,11 @@ export const DTapBar: ITapBarItem[] = [
     title: "Аналитика",
     path: "/app/analytics",
     icon: ChartBar,
+  },
+  {
+    title: "Мессенджер",
+    path: "/app/messenger",
+    icon: Messanger,
   },
   {
     title: "Профиль",

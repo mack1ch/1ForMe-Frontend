@@ -6,4 +6,9 @@ export interface ITapBarItem {
   icon: StaticImport;
 }
 
-export type TTapBarItemTitle = "Главная" | "Клиенты" | "Аналитика" | "Профиль";
+export type TTapBarItemTitle =
+  | "Главная"
+  | "Клиенты"
+  | "Аналитика"
+  | "Профиль"
+  | "Мессенджер";
