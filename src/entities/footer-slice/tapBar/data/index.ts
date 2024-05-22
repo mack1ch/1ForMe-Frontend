@@ -17,11 +17,6 @@ export const DTapBar: ITapBarItem[] = [
     icon: FourUsers,
   },
   {
-    title: "Чат",
-    path: "/chat/messenger",
-    icon: Messanger,
-  },
-  {
     title: "Аналитика",
     path: "/app/analytics",
     icon: ChartBar,

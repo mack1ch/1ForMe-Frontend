@@ -1,5 +1,6 @@
 "use client";
 
+import { ClientHeaderIcons } from "@/entities/client-slice/clientHeaderIcons";
 import { PageLayout } from "@/screens/layout/pageLayout";
 import { instanceLogged } from "@/shared/api/axios-config";
 import { IUser } from "@/shared/interface/user";
@@ -26,7 +27,7 @@ export default function Home({ params }: { params: { id: number } }) {
   return (
     <>
       <PageHeader
-        icon={<ClientInfoIcon href={`/app/clients/client/${params.id}/info`} />}
+        icon={<ClientHeaderIcons paramsLink={params.id.toString()} />}
         onBack={() => router.back()}
       >
         {user && user?.name} {user?.surname && user.surname}

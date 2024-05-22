@@ -12,7 +12,7 @@ export const wazzupInstance: AxiosInstance = axios.create({
   baseURL: "https://api.wazzup24.com",
   timeout: 5000,
   headers: {
-    Authorization: "Bearer 00edd1ec41ba48448dc690015759f598",
+    Authorization: `Bearer ${process.env.WAZZUP_TOKEN}`,
   },
 });
 
