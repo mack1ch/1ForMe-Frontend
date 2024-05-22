@@ -1,5 +1,6 @@
 "use client";
 
+import { MessengerWindow } from "@/features/messenger-slice/messengerWindow";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
@@ -7,13 +8,8 @@ export default function Home() {
 
   return (
     <>
-      {/* <div style={{ width: "100vw", height: "100svh" }}>
-        <iframe
-          src="https://carrotquest.io/panel/unauthorized/login/"
-          width="100%"
-          height="100%"
-        />
-      </div> */}
+   
+      <MessengerWindow />
     </>
   );
 }

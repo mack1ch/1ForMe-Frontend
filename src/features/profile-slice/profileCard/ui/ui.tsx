@@ -69,6 +69,13 @@ export const ProfileCard = () => {
                   {day} {month.name}
                 </div>
               )}
+              {user.trainerProfile.sports &&
+                user.trainerProfile.sports.length > 0 &&
+                user.trainerProfile.sports.map((sport, index) => (
+                  <div key={index} className={styles.category}>
+                    {sport.name}
+                  </div>
+                ))}
             </div>
             {user.trainerProfile?.description && <DashDivider />}
             {user.trainerProfile?.description && (

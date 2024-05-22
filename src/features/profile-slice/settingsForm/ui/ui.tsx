@@ -3,19 +3,20 @@
 import styles from "./ui.module.scss";
 import { IUser } from "@/shared/interface/user";
 import { ChangeEvent, useEffect, useState } from "react";
-import { changeAuthUserData, getAuthUser } from "../api";
-import { Button, Form, Input, message, TimePickerProps } from "antd";
+import { changeAuthUserData, getAllSports, getAuthUser } from "../api";
+import { Button, Form, Input, message, Select, TimePickerProps } from "antd";
 import { DRequestFields } from "../data";
-import { ISettingsFormUser } from "../interface";
+import { ISelectOptions, ISettingsFormUser } from "../interface";
 import { isNonEmptyArray } from "@/shared/lib/check/emptyArray";
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
+
 const { TextArea } = Input;
 
 export const SettingsForm = () => {
-  const [user, setUser] = useState<IUser | null>();
   const [isButtonLoading, setButtonLoading] = useState<boolean>(false);
   const [isButtonDisabled, setButtonDisabled] = useState<boolean>(false);
+  const [allSports, setAllSports] = useState<ISelectOptions[]>();
   const [formData, setFormData] = useState<ISettingsFormUser>({
     name: "",
     surname: "",
@@ -24,12 +25,21 @@ export const SettingsForm = () => {
     phone: "",
     description: "",
     birthDayInput: null,
+    sports: undefined,
   });
   useEffect(() => {
     async function getUser() {
       const authUser: IUser | Error = await getAuthUser();
-      if (authUser instanceof Error) return;
-      setUser(authUser);
+      const allSports = await getAllSports();
+
+      if (authUser instanceof Error || allSports instanceof Error) return;
+      setAllSports((prev) =>
+        allSports.map((item) => ({
+          value: item.id.toString(),
+          label: item.name,
+        }))
+      );
+
       setFormData((prev) => ({
         ...prev,
         name: authUser.name,
@@ -39,6 +49,9 @@ export const SettingsForm = () => {
         phone: authUser.phone,
         description: authUser.trainerProfile.description,
         experience: authUser.trainerProfile.experience,
+        sports: authUser.trainerProfile.sports.map((item) =>
+          item.id.toString()
+        ),
       }));
     }
     getUser();
@@ -71,6 +84,13 @@ export const SettingsForm = () => {
       ...prevData,
       [name]: value,
     }));
+  };
+  const handleSportSelectChange = (sports: string[] | number[]) => {
+    setFormData((prev) => ({
+      ...prev,
+      sports: sports,
+    }));
+    console.log(sports, formData.sports);
   };
   const onChangeBirthday: TimePickerProps["onChange"] = (time, timeString) => {
     setFormData((prev) => ({
@@ -106,6 +126,16 @@ export const SettingsForm = () => {
       setButtonLoading(false);
     }
   };
+
+  const getSelectedSportsLabels = (): React.ReactNode[] => {
+    return (
+      formData.sports?.map((sportId) => {
+        const sport = allSports?.find((s) => s.value === sportId);
+        return sport ? sport.label : sportId;
+      }) || []
+    );
+  };
+
   return (
     <>
       <Form style={{ width: "100%" }} name="validateOnly" layout="vertical">
@@ -143,6 +173,25 @@ export const SettingsForm = () => {
             />
           </Form.Item>
           <Form.Item
+            required
+            label="Ваши направления"
+            style={{
+              width: "100%",
+              textAlign: "start",
+              alignItems: "flex-start",
+            }}
+          >
+            <Select
+              mode="multiple"
+              placeholder="Выберите подходящий спорт"
+              size="large"
+              onChange={handleSportSelectChange}
+              options={allSports}
+              value={formData.sports}
+              getPopupContainer={(trigger) => trigger.parentNode}
+            />
+          </Form.Item>
+          <Form.Item
             label="Дата рождения"
             style={{
               width: "100%",
@@ -151,7 +200,7 @@ export const SettingsForm = () => {
             }}
           >
             <DatePicker
-            inputReadOnly
+              inputReadOnly
               placeholder="Выберите день рождения"
               style={{ width: "100%" }}
               size="large"
@@ -192,6 +241,7 @@ export const SettingsForm = () => {
               value={formData.phone}
             />
           </Form.Item>
+
           <Form.Item
             label="О себе"
             style={{

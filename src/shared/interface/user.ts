@@ -24,6 +24,7 @@ export interface ITrainerProfile {
   whatsApp: string;
   clients?: IUser[];
   description: string;
+  sports: ISport[];
   experience: number;
   category: string;
   tax?: number;

@@ -1,4 +1,5 @@
 import dayjs from "dayjs";
+import { ReactNode } from "react";
 
 export interface ISettingsFormUser {
   name: string;
@@ -8,4 +9,10 @@ export interface ISettingsFormUser {
   experience?: number;
   phone: string;
   description?: string;
+  sports?: string[] | number[];
+}
+
+export interface ISelectOptions {
+  value: string;
+  label: ReactNode;
 }
