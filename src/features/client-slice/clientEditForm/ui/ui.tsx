@@ -1,11 +1,12 @@
-import { Button, Form, Input, message } from "antd";
+import { Button, Form, Input, message, Select } from "antd";
 import styles from "./ui.module.scss";
 import { useEffect, useState } from "react";
-import { IClientEditForm } from "../inteface";
+import { IClientEditForm, ISelectOptions } from "../inteface";
 import { IUser } from "@/shared/interface/user";
 import {
   changeClientCommentByID,
   changedClientData,
+  getChatTypes,
   getClientByID,
   getClientCommentByID,
 } from "../api";
@@ -17,7 +18,12 @@ export const ClientEditForm = ({ clientID }: { clientID: number }) => {
     name: "",
     phone: "",
     comment: "",
+    messenger: "",
   });
+
+  const [chatSelectOptions, setChatSelectOptions] =
+    useState<ISelectOptions[]>();
+
   const [isButtonLoading, setButtonLoading] = useState<boolean>(false);
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -26,19 +32,34 @@ export const ClientEditForm = ({ clientID }: { clientID: number }) => {
       [name]: value,
     }));
   };
+  const handleSelectChange = (value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      messenger: value,
+    }));
+  };
   const [user, setUser] = useState<IUser>();
   const [isButtonDisabled, setButtonDisabled] = useState<boolean>(false);
+
   useEffect(() => {
     async function fetchData() {
       const client: IUser | Error = await getClientByID(clientID);
-      if (client instanceof Error) return;
+      const chats = await getChatTypes();
+      if (chats instanceof Error || client instanceof Error) return;
+
       setUser(client);
       setFormData((prev) => ({
         ...prev,
         name: client.name + " " + client.surname,
         phone: client.phone,
+        messenger: client.chatType?.id.toString(),
       }));
-
+      setChatSelectOptions((prev) =>
+        chats.map((item) => ({
+          label: item.name,
+          value: item.id.toString(),
+        }))
+      );
       const clientComment: IComment | Error = await getClientCommentByID(
         clientID
       );
@@ -99,6 +120,10 @@ export const ClientEditForm = ({ clientID }: { clientID: number }) => {
       setButtonLoading(false);
     }
   };
+  const currentChatLabel = chatSelectOptions?.find(
+    (option) => option.value.toString() === formData.messenger?.toString()
+  );
+
   return (
     <>
       <Form style={{ width: "100%" }} name="validateOnly" layout="vertical">
@@ -140,6 +165,23 @@ export const ClientEditForm = ({ clientID }: { clientID: number }) => {
               maxLength={11}
               size="large"
               placeholder="Номер телефона"
+            />
+          </Form.Item>
+          <Form.Item
+            style={{
+              width: "100%",
+              textAlign: "start",
+              alignItems: "flex-start",
+            }}
+            label="Удобный мессенджер"
+          >
+            <Select
+              value={currentChatLabel?.value?.toString()}
+              defaultValue={currentChatLabel?.value?.toString()}
+              options={chatSelectOptions}
+              onChange={handleSelectChange}
+              placeholder="Мессенджер"
+              size="large"
             />
           </Form.Item>
           <Form.Item

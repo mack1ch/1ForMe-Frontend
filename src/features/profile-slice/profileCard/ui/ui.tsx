@@ -18,9 +18,10 @@ export const ProfileCard = () => {
     async function getUser() {
       const authUser: IUser | Error = await getAuthUser();
       if (authUser instanceof Error) return;
-      setUser(authUser);
+      
     }
     getUser();
+
   }, []);
 
   return (

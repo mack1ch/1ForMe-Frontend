@@ -1,3 +1,4 @@
+import { IChatTypes } from "./chats";
 import { ISport } from "./sport";
 import { ITariff } from "./tariff";
 import { ITraining } from "./training";
@@ -12,6 +13,7 @@ export interface IUser {
   trainer: IUser[];
   sports: ISport;
   birthday?: Date;
+  chatType?: IChatTypes;
   closestTraining?: ITraining;
   trainerProfile: ITrainerProfile;
   comment?: string;

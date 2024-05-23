@@ -17,7 +17,12 @@ export const MessengerWindow = () => {
   return (
     <>
       <div style={{ width: "100%", height: "100%", display: "flex" }}>
-        <iframe src={iframeLink?.url} width="100%" height="100%" />
+        <iframe
+          allow="microphone *; clipboard-write *"
+          src={iframeLink?.url}
+          width="100%"
+          height="100%"
+        />
       </div>
     </>
   );

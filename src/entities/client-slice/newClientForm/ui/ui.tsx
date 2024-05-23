@@ -1,19 +1,23 @@
 "use client";
 
 import { PhoneOutlined, UserOutlined } from "@ant-design/icons";
-import { Button, Form, Input, message } from "antd";
+import { Button, Form, Input, message, Select } from "antd";
 import { useEffect, useState } from "react";
 import styles from "./ui.module.scss";
-import { IClient } from "../interface";
-import { createClient } from "../api";
+import { IClient, ISelectOptions } from "../interface";
+import { createClient, getChatTypes } from "../api";
 import { useRouter } from "next/navigation";
 import { RequestFields } from "../data";
 import { isNonEmptyArray } from "@/shared/lib/check/emptyArray";
+
 export const NewClientForm = () => {
   const [form] = Form.useForm();
+  const [chatSelectOptions, setChatSelectOptions] =
+    useState<ISelectOptions[]>();
   const [inputValues, setInputValues] = useState<IClient>({
     name: "",
     phone: "",
+    messenger: "",
   });
   const router = useRouter();
   const isFormValid = (values: Partial<IClient>): boolean => {
@@ -28,6 +32,19 @@ export const NewClientForm = () => {
     });
   };
 
+  useEffect(() => {
+    async function getChats() {
+      const chats = await getChatTypes();
+      if (chats instanceof Error) return;
+      setChatSelectOptions((prev) =>
+        chats.map((item) => ({
+          label: item.name,
+          value: item.id.toString(),
+        }))
+      );
+    }
+    getChats();
+  }, []);
   const successMassage = () => {
     message.open({
       type: "success",
@@ -43,6 +60,7 @@ export const NewClientForm = () => {
   const handleSubmit = async () => {
     try {
       const res = await createClient(inputValues);
+
       if (!(res instanceof Error)) {
         successMassage();
         router.push("/app/clients");
@@ -69,7 +87,7 @@ export const NewClientForm = () => {
             prefix={<UserOutlined />}
           />
         </Form.Item>
-        <Form.Item name="phone">
+        <Form.Item style={{ marginBottom: "8px" }} name="phone">
           <Input
             value={inputValues.phone}
             onChange={(e) => handleInputChange("phone", e.target.value)}
@@ -77,6 +95,15 @@ export const NewClientForm = () => {
             placeholder="Номер телефона"
             size="large"
             prefix={<PhoneOutlined />}
+          />
+        </Form.Item>
+        <Form.Item name="messanger">
+          <Select
+            options={chatSelectOptions}
+            value={inputValues.messenger}
+            onChange={(e) => handleInputChange("messenger", e)}
+            placeholder="Мессенджер"
+            size="large"
           />
         </Form.Item>
         <Form.Item shouldUpdate noStyle>

@@ -90,7 +90,6 @@ export const SettingsForm = () => {
       ...prev,
       sports: sports,
     }));
-    console.log(sports, formData.sports);
   };
   const onChangeBirthday: TimePickerProps["onChange"] = (time, timeString) => {
     setFormData((prev) => ({
