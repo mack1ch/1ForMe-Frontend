@@ -61,6 +61,7 @@ export const changedClientData = async (
         surname: nameAndSurname[1],
         phone: clientData.phone,
         chatType: clientData.messenger,
+        userNameInMessenger: clientData.userNameInMessenger,
       }
     );
     return data;

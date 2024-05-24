@@ -4,9 +4,10 @@ export interface IClient {
   name: string;
   phone: string;
   messenger: number | string;
+  userNameInMessenger?: string;
 }
 
-export interface ISelectOptions{
+export interface ISelectOptions {
   value: string;
-  label: ReactNode
+  label: ReactNode;
 }

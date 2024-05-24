@@ -6,7 +6,7 @@ export const ClientHeaderIcons = ({ paramsLink }: { paramsLink: string }) => {
   return (
     <>
       <div className={styles.layout}>
-        <ChatIcon href={`/chat/messenger`} />
+        <ChatIcon href={`/app/clients/client/${paramsLink}/messenger`} />
         <ClientInfoIcon href={`/app/clients/client/${paramsLink}/info`} />
       </div>
     </>

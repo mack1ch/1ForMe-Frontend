@@ -18,10 +18,15 @@ export const NewClientForm = () => {
     name: "",
     phone: "",
     messenger: "",
+    userNameInMessenger: undefined,
   });
   const router = useRouter();
+  const currentMessengerLabel = chatSelectOptions?.find(
+    (option) => option.value === inputValues.messenger
+  );
+
   const isFormValid = (values: Partial<IClient>): boolean => {
-    return RequestFields.every((fieldName) => {
+    const basicFieldsValid = RequestFields.every((fieldName) => {
       const fieldValue = values[fieldName];
       return (
         fieldValue !== undefined &&
@@ -30,6 +35,15 @@ export const NewClientForm = () => {
         (Array.isArray(fieldValue) ? isNonEmptyArray(fieldValue) : true)
       );
     });
+
+    const messengerFieldsValid = !(
+      (currentMessengerLabel?.label === "Telegram" ||
+        currentMessengerLabel?.label === "Instagram") &&
+      (!values.userNameInMessenger ||
+        values.userNameInMessenger.trim() === "")
+    );
+
+    return basicFieldsValid && messengerFieldsValid;
   };
 
   useEffect(() => {
@@ -69,6 +83,7 @@ export const NewClientForm = () => {
       message.error("Ошибка на сервере, мы уже работаем над устранением");
     }
   };
+
   return (
     <>
       <Form
@@ -97,7 +112,7 @@ export const NewClientForm = () => {
             prefix={<PhoneOutlined />}
           />
         </Form.Item>
-        <Form.Item name="messanger">
+        <Form.Item style={{ marginBottom: "8px" }} name="messanger">
           <Select
             options={chatSelectOptions}
             value={inputValues.messenger}
@@ -106,6 +121,19 @@ export const NewClientForm = () => {
             size="large"
           />
         </Form.Item>
+        {(currentMessengerLabel?.label === "Telegram" ||
+          currentMessengerLabel?.label === "Instagram") && (
+          <Form.Item name="userNameInMessenger">
+            <Input
+              value={inputValues.userNameInMessenger}
+              onChange={(e) =>
+                handleInputChange("userNameInMessenger", e.target.value)
+              }
+              placeholder={`Имя пользователя в формате @username`}
+              size="large"
+            />
+          </Form.Item>
+        )}
         <Form.Item shouldUpdate noStyle>
           {() => (
             <Button

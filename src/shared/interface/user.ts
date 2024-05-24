@@ -15,6 +15,7 @@ export interface IUser {
   birthday?: Date;
   chatType?: IChatTypes;
   closestTraining?: ITraining;
+  userNameInMessenger?: string; // For Telegram or Instagram
   trainerProfile: ITrainerProfile;
   comment?: string;
 }

@@ -12,6 +12,7 @@ export const createClient = async (client: IClient): Promise<IUser | Error> => {
       surname: parseNameToNameAndSurname(client.name)[1],
       role: "client",
       chatType: client.messenger,
+      userNameInMessenger: client.userNameInMessenger,
     };
     const { data }: { data: IUser } = await instanceLogged.post(
       "/auth/register/byTrainer/",

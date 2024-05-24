@@ -19,10 +19,14 @@ export const ClientEditForm = ({ clientID }: { clientID: number }) => {
     phone: "",
     comment: "",
     messenger: "",
+    userNameInMessenger: undefined,
   });
 
   const [chatSelectOptions, setChatSelectOptions] =
     useState<ISelectOptions[]>();
+  const currentMessengerLabel = chatSelectOptions?.find(
+    (option) => option.value === formData.messenger
+  );
 
   const [isButtonLoading, setButtonLoading] = useState<boolean>(false);
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,7 +57,9 @@ export const ClientEditForm = ({ clientID }: { clientID: number }) => {
         name: client.name + " " + client.surname,
         phone: client.phone,
         messenger: client.chatType?.id.toString(),
+        userNameInMessenger: client.userNameInMessenger,
       }));
+
       setChatSelectOptions((prev) =>
         chats.map((item) => ({
           label: item.name,
@@ -138,7 +144,6 @@ export const ClientEditForm = ({ clientID }: { clientID: number }) => {
             }}
           >
             <Input
-              autoFocus
               onChange={handleInputChange}
               value={formData.name}
               defaultValue={user?.name + " " + user?.surname}
@@ -157,7 +162,6 @@ export const ClientEditForm = ({ clientID }: { clientID: number }) => {
             }}
           >
             <Input
-              autoFocus
               onChange={handleInputChange}
               value={formData.phone}
               name={"phone"}
@@ -184,6 +188,27 @@ export const ClientEditForm = ({ clientID }: { clientID: number }) => {
               size="large"
             />
           </Form.Item>
+          {(currentMessengerLabel?.label === "Telegram" ||
+            currentMessengerLabel?.label === "Instagram") && (
+            <Form.Item
+              label={`Имя пользователя в ${currentChatLabel?.label}`}
+              style={{
+                width: "100%",
+                textAlign: "start",
+                alignItems: "flex-start",
+              }}
+              name="userNameInMessenger"
+            >
+              <Input
+                defaultValue={formData.userNameInMessenger}
+                value={formData.userNameInMessenger}
+                name="userNameInMessenger"
+                onChange={handleInputChange}
+                placeholder={`В формате @username`}
+                size="large"
+              />
+            </Form.Item>
+          )}
           <Form.Item
             label="Комментарий"
             style={{

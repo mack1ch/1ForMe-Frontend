@@ -5,6 +5,7 @@ export interface IClientEditForm {
   phone: string;
   comment?: string;
   messenger?: string | number;
+  userNameInMessenger?: string;
 }
 export interface ISelectOptions {
   value: string;
