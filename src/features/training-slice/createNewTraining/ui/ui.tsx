@@ -324,9 +324,17 @@ export const CreateNewTraining = ({
             }}
           >
             <Select
-              mode={currentTariff?.label === "Сплит" ? "multiple" : undefined}
+              mode={
+                editTrainingData
+                  ? undefined
+                  : currentTariff?.label === "Сплит"
+                  ? "multiple"
+                  : undefined
+              }
               onChange={
-                currentTariff?.label === "Сплит"
+                editTrainingData
+                  ? onHandleClientChange
+                  : currentTariff?.label === "Сплит"
                   ? onHandleClientMultiplyChange
                   : onHandleClientChange
               }
@@ -342,16 +350,16 @@ export const CreateNewTraining = ({
                   : undefined
               }
               value={
-                currentTariff?.label === "Сплит"
-                  ? undefined
-                  : editTrainingData
+                editTrainingData
                   ? findOptionById(
-                      formData.clientID?.toString() || null,
+                      formData.clientID
+                        ? formData.clientID[0].toString()
+                        : null,
                       selectClientsOptions
                     )?.label?.toString()
                   : formData.clientID
                   ? currentClient?.label?.toString()
-                  : defaultClient?.label?.toLocaleString()
+                  : defaultClient?.label?.toString()
               }
               defaultValue={defaultClient?.label?.toString()}
               size="middle"
