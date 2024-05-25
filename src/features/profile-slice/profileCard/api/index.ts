@@ -9,4 +9,3 @@ export const getAuthUser = async (): Promise<IUser | Error> => {
     return error as Error;
   }
 };
-

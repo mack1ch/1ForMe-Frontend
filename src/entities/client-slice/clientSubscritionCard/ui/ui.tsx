@@ -7,6 +7,7 @@ import { ClientSubscriptionTraining } from "@/shared/ui/client-slice/clientSubsc
 import { ISubscription } from "@/shared/interface/subscriptions";
 import { convertToCurrencyFormat } from "@/shared/lib/parse/money";
 import { parseDateToDateAndMonth } from "@/shared/lib/parse/date";
+import { ETransactionStatus } from "@/shared/interface/transaction";
 export const ClientSubscriptionCard = ({
   subscription,
 }: {
