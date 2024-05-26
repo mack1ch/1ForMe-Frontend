@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from "axios";
 
-const BASE_URL = "http://37.27.44.250:3000";
+const BASE_URL = "https://1forme.postideas.store/api";
 
 export const instance: AxiosInstance = axios.create({
   baseURL: BASE_URL,
