@@ -1,5 +1,5 @@
 import styles from "./ui.module.scss";
-import { ITransaction } from "@/shared/interface/transaction";
+import { ETransactionStatus, ITransaction } from "@/shared/interface/transaction";
 import { DashDivider } from "@/shared/ui/divider-slice/dashDivider/ui/ui";
 
 export const TransactionCard = ({
@@ -26,7 +26,7 @@ export const TransactionCard = ({
               }}
               className={styles.sport}
             >
-              {transaction.status.toLowerCase()}
+              {ETransactionStatus[transaction.status]}
             </h4>
           </div>
           <div className={styles.wrap}>

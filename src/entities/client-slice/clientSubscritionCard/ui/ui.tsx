@@ -52,7 +52,9 @@ export const ClientSubscriptionCard = ({
                     subscription.transaction?.tariff?.cost?.toString()
                   ) + " ₽"}
                 </h4>
-                <p className={styles.p}>{subscription.transaction.status}</p>
+                <p className={styles.p}>
+                  {ETransactionStatus[subscription.transaction.status]}
+                </p>
               </div>
               <button
                 onClick={() => setCardOpen(!isCardOpen)}

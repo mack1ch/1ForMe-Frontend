@@ -6,6 +6,7 @@ import { IUser } from "@/shared/interface/user";
 import { ITraining } from "@/shared/interface/training";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { ETransactionStatus } from "@/shared/interface/transaction";
 export const TrainingCard = ({
   training,
   isKnowClient = false,
@@ -65,8 +66,9 @@ export const TrainingCard = ({
                   </h4>
                   <h4 className={styles.status}>
                     {isMyTraining
-                      ? training.subscription?.transaction.status ||
-                        training.transaction.status
+                      ? ETransactionStatus[
+                          training.subscription?.transaction.status
+                        ] || ETransactionStatus[training.transaction.status]
                       : training.trainer.name + " " + training.trainer.surname}
                   </h4>
                 </div>

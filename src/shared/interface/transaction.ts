@@ -17,7 +17,7 @@ export interface ITransaction {
   client: IUser;
   cost: number;
   createdAt: Date;
-  status: ETransactionStatus;
+  status: "Unpaid" | "Paid" | "Refunded" | "Canceled";
   tariff: ITariff;
   training: ITraining;
   subscription: ISubscription;
