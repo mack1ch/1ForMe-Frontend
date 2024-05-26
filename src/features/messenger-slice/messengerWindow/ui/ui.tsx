@@ -7,7 +7,7 @@ import { IUser } from "@/shared/interface/user";
 
 export const MessengerWindow = ({ user }: { user?: IUser }) => {
   const [iframeLink, setIframeLink] = useState<IURL>();
-  console.log(user);
+
   useEffect(() => {
     async function getIFrameLinkByPOSTReq() {
       const link = await getIframeLink(

@@ -83,8 +83,7 @@ export const Statistics = ({
               {analytics &&
                 convertToCurrencyFormat(
                   analytics[activeItemIndex]?.costSum.toString()
-                ) &&
-                "₽"}
+                ) + " ₽"}
             </h2>
             <h4 className={styles.date}>
               {analytics &&
