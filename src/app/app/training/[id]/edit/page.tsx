@@ -5,6 +5,7 @@ import { PageLayout } from "@/screens/layout/pageLayout";
 import { instanceLogged } from "@/shared/api/axios-config";
 import { ITraining } from "@/shared/interface/training";
 import { IUser } from "@/shared/interface/user";
+import { ChatIcon } from "@/shared/ui/client-slice/chatIcon";
 import { PageHeader } from "@/shared/ui/header-slice/pageHeader";
 import { AxiosResponse } from "axios";
 import { useRouter } from "next/navigation";
@@ -25,7 +26,16 @@ export default function Home({ params }: { params: { id: number } }) {
   }, [params.id]);
   return (
     <>
-      <PageHeader onBack={() => router.back()}>Занятие</PageHeader>
+      <PageHeader
+        icon={
+          <ChatIcon
+            href={`/app/clients/client/${training?.client.id}/messenger`}
+          />
+        }
+        onBack={() => router.back()}
+      >
+        Занятие
+      </PageHeader>
       <PageLayout isMargin>
         <CreateNewTraining editTrainingData={training} />
       </PageLayout>

@@ -26,6 +26,7 @@ import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { IClubSlot } from "@/shared/interface/slots";
 import { formatDateToDayAndDateFormat } from "@/shared/lib/parse/date";
+import { RangePickerProps } from "antd/es/date-picker";
 
 export const CreateSubscription = ({ clientID }: { clientID?: number }) => {
   const dateFormat = "DD.MM.YYYY";
@@ -164,7 +165,7 @@ export const CreateSubscription = ({ clientID }: { clientID?: number }) => {
       });
       return newSelectedSlots;
     });
-  }, [selectTariff]);
+  }, [isFirstWorkOut]);
 
   const handleTrainingChange = async (
     index: number,
@@ -265,8 +266,14 @@ export const CreateSubscription = ({ clientID }: { clientID?: number }) => {
         ...prev,
         tariffID: tariffValueIfIsFirstWorkOut.id,
       }));
+      setSelectTariff(tariffValueIfIsFirstWorkOut);
     }
   }, [selectTariff, tariffValueIfIsFirstWorkOut]);
+  const disabledDate: RangePickerProps["disabledDate"] = (current) => {
+    // Can not select days before today and today
+    return current && current < dayjs().startOf("day");
+  };
+
   return (
     <>
       <Form style={{ width: "100%" }} name="validateOnly" layout="vertical">
@@ -279,11 +286,11 @@ export const CreateSubscription = ({ clientID }: { clientID?: number }) => {
               filterSort={customFilterSort}
               showSearch
               value={
-                tariffValueIfIsFirstWorkOut
-                  ? tariffValueIfIsFirstWorkOut?.name +
+                selectTariff
+                  ? selectTariff?.name +
                     " / " +
-                    tariffValueIfIsFirstWorkOut?.trainingAmount +
-                    "тренировок"
+                    selectTariff?.trainingAmount +
+                    " тренировок"
                   : undefined
               }
               placeholder="Выберите тариф"
@@ -346,6 +353,7 @@ export const CreateSubscription = ({ clientID }: { clientID?: number }) => {
                   <div className={styles.inputLayout}>
                     <DatePicker
                       inputReadOnly
+                      disabledDate={disabledDate}
                       format={dateFormat}
                       style={{ width: "100%" }}
                       placeholder="Выберите дату"
