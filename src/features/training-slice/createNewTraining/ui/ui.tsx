@@ -242,9 +242,10 @@ export const CreateNewTraining = ({
   const handleCreateTraining = async () => {
     try {
       setButtonLoading(true);
-      const response = editTrainingData
+      const response: any = editTrainingData
         ? await changeTraining(formData, editTrainingData.id)
         : await createTraining(formData);
+      console.log(response);
       if (response instanceof Error) {
         message.open({
           type: "error",
@@ -254,12 +255,13 @@ export const CreateNewTraining = ({
         return;
       } else {
         router.push(`/app/dashboard`);
+
         message.open({
           type: "success",
           content: `Тренировка успешно ${
             editTrainingData ? "изменена" : "создана"
           } на ${formatDateToDayAndDateFormat(
-            response[0].date.toString().toLowerCase()
+            response.date.toString().toLowerCase()
           )}`,
 
           duration: 4,
@@ -267,10 +269,10 @@ export const CreateNewTraining = ({
         setButtonLoading(false);
       }
     } catch {
-      message.open({
-        type: "error",
-        content: "Проблема на сервере, мы уже работаем над устранением",
-      });
+      // message.open({
+      //   type: "error",
+      //   content: "Проблема на сервере, мы уже работаем над устранением",
+      // });
       setButtonLoading(false);
     }
   };

@@ -65,7 +65,6 @@ export const createTraining = async (
         type: 1,
         club: training.clubID,
         tariff: training.tariffID,
-        clientsAmount: training.clientID?.length,
       }
     );
     return data;

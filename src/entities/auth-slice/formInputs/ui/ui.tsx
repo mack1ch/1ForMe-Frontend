@@ -8,6 +8,7 @@ import { isNonEmptyArray } from "@/shared/lib/check/emptyArray";
 import { IAuth } from "@/shared/interface/auth";
 import { DRequestFields } from "../data";
 import { inputTheme } from "../theme";
+import { MaskedInput } from "antd-mask-input";
 
 export const FormInputs = ({
   placeholder,
