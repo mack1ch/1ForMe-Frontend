@@ -9,6 +9,7 @@ import { findMaxCostSum } from "../model";
 import {
   getMonthNameByMonthNumber,
   getMonthNameByMonthNumberWithEnds,
+  getWeekDateRange,
 } from "@/shared/lib/parse/date";
 import { convertToCurrencyFormat } from "@/shared/lib/parse/money";
 import { LackData } from "@/shared/ui/error-slice/lackData";
@@ -63,9 +64,10 @@ export const Statistics = ({
           : "";
       case "week":
         return activeItem.week
-          ? `${activeItem.week} ${getMonthNameByMonthNumberWithEnds(
-              activeItem.month
-            )}`
+          ? ` ${
+              getWeekDateRange(activeItem.week, activeItem.year) ||
+              "" + " " + getMonthNameByMonthNumberWithEnds(activeItem.month)
+            } `
           : "";
       case "month":
         return `за ${getMonthNameByMonthNumber(activeItem.month)}`;
@@ -73,7 +75,7 @@ export const Statistics = ({
         return "Загрузка...";
     }
   };
-
+  
   return (
     <>
       {analytics && analytics?.length ? (

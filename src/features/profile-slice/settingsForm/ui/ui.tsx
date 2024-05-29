@@ -173,6 +173,22 @@ export const SettingsForm = () => {
           </Form.Item>
           <Form.Item
             required
+            label="Контактный номер"
+            style={{
+              width: "100%",
+              textAlign: "start",
+              alignItems: "flex-start",
+            }}
+          >
+            <Input
+              size="large"
+              onChange={handleInputChange}
+              name="phone"
+              value={formData.phone}
+            />
+          </Form.Item>
+          <Form.Item
+            required
             label="Ваши направления"
             style={{
               width: "100%",
@@ -222,22 +238,6 @@ export const SettingsForm = () => {
               onChange={handleInputChange}
               name="experience"
               value={formData.experience}
-            />
-          </Form.Item>
-          <Form.Item
-            required
-            label="Контактный номер"
-            style={{
-              width: "100%",
-              textAlign: "start",
-              alignItems: "flex-start",
-            }}
-          >
-            <Input
-              size="large"
-              onChange={handleInputChange}
-              name="phone"
-              value={formData.phone}
             />
           </Form.Item>
 

@@ -114,7 +114,7 @@ export function getMonthNameByMonthNumber(monthNumber?: number): string {
     "Февраль",
     "Март",
     "Апрель",
-    "Май",
+    "Мая",
     "Июнь",
     "Июль",
     "Август",
