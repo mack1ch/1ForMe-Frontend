@@ -9,7 +9,8 @@ import { createClient, getChatTypes } from "../api";
 import { useRouter } from "next/navigation";
 import { RequestFields } from "../data";
 import { isNonEmptyArray } from "@/shared/lib/check/emptyArray";
-
+import InputMask from "react-input-mask";
+import { formatTelNumber } from "@/shared/lib/parse/phone";
 export const NewClientForm = () => {
   const [form] = Form.useForm();
   const [chatSelectOptions, setChatSelectOptions] =
@@ -39,8 +40,7 @@ export const NewClientForm = () => {
     const messengerFieldsValid = !(
       (currentMessengerLabel?.label === "Telegram" ||
         currentMessengerLabel?.label === "Instagram") &&
-      (!values.userNameInMessenger ||
-        values.userNameInMessenger.trim() === "")
+      (!values.userNameInMessenger || values.userNameInMessenger.trim() === "")
     );
 
     return basicFieldsValid && messengerFieldsValid;
@@ -66,10 +66,17 @@ export const NewClientForm = () => {
     });
   };
   const handleInputChange = (name: string, value: string | number | null) => {
-    setInputValues((prevValues) => ({
-      ...prevValues,
-      [name]: value,
-    }));
+    if (name === "phone") {
+      setInputValues((prevValues) => ({
+        ...prevValues,
+        [name]: formatTelNumber(value?.toString()),
+      }));
+    } else {
+      setInputValues((prevValues) => ({
+        ...prevValues,
+        [name]: value,
+      }));
+    }
   };
   const handleSubmit = async () => {
     try {
@@ -103,14 +110,26 @@ export const NewClientForm = () => {
           />
         </Form.Item>
         <Form.Item style={{ marginBottom: "8px" }} name="phone">
-          <Input
+          <InputMask
+            mask="+79999999999"
+            maskChar={null}
+            type="tel"
             value={inputValues.phone}
             onChange={(e) => handleInputChange("phone", e.target.value)}
-            type="number"
-            placeholder="Номер телефона"
-            size="large"
-            prefix={<PhoneOutlined />}
-          />
+          >
+            {
+              //@ts-ignore
+              (inputProps) => (
+                <Input
+                  type="number"
+                  placeholder="Номер телефона"
+                  size="large"
+                  prefix={<PhoneOutlined />}
+                  {...inputProps}
+                />
+              )
+            }
+          </InputMask>
         </Form.Item>
         <Form.Item style={{ marginBottom: "8px" }} name="messanger">
           <Select

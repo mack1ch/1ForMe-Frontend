@@ -1,6 +1,7 @@
 import { wazzupInstance } from "@/shared/api/axios-config";
 import { IURL } from "../interface";
 import { IChatTypes } from "@/shared/interface/chats";
+import { formatUserName } from "../model";
 
 export const getIframeLink = async (
   chatType: IChatTypes,
@@ -8,6 +9,10 @@ export const getIframeLink = async (
   userName?: string
 ): Promise<IURL | Error> => {
   try {
+    const username =
+      chatType.name === "Telegram"
+        ? formatUserName(userName || "", chatType)
+        : undefined;
     const { data }: { data: IURL } = await wazzupInstance.post(
       "https://api.wazzup24.com/v3/iframe/",
       {
@@ -25,7 +30,7 @@ export const getIframeLink = async (
                 : chatType.name === "Instagram"
                 ? userName
                 : phone,
-            username: chatType.name === "Telegram" ? userName : undefined,
+            username,
           },
         ],
       }

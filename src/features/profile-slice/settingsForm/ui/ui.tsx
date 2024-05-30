@@ -10,6 +10,8 @@ import { ISelectOptions, ISettingsFormUser } from "../interface";
 import { isNonEmptyArray } from "@/shared/lib/check/emptyArray";
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
+import InputMask from "react-input-mask";
+import { formatTelNumber } from "@/shared/lib/parse/phone";
 
 const { TextArea } = Input;
 
@@ -81,10 +83,17 @@ export const SettingsForm = () => {
       | ChangeEvent<HTMLTextAreaElement>
   ) => {
     const { name, value } = event.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    if (name === "phone") {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: formatTelNumber(value.toString()),
+      }));
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
   };
   const handleSportSelectChange = (sports: string[] | number[]) => {
     setFormData((prev) => ({
@@ -172,13 +181,22 @@ export const SettingsForm = () => {
               alignItems: "flex-start",
             }}
           >
-            <Input
-              size="large"
-              onChange={handleInputChange}
+            <InputMask
               name="phone"
               value={formData.phone}
-            />
+              onChange={handleInputChange}
+              mask="+79999999999"
+              maskChar={null}
+            >
+              {
+                //@ts-ignore
+                (inputProps) => (
+                  <Input size="large" {...inputProps} name="phone" />
+                )
+              }
+            </InputMask>
           </Form.Item>
+
           <Form.Item
             required
             label="Ваши направления"

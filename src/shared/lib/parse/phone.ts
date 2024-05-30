@@ -10,3 +10,8 @@ export const parsePhoneNumber = (phoneNumber?: string) => {
   )}-${cleanedNumber.slice(9, 11)}`;
   return formatted;
 };
+
+export function formatTelNumber(phone?: string): string {
+  if (!phone) return "";
+  return phone.startsWith("+") ? phone.substring(1) : phone;
+}

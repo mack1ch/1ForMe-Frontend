@@ -8,7 +8,8 @@ import { isNonEmptyArray } from "@/shared/lib/check/emptyArray";
 import { IAuth } from "@/shared/interface/auth";
 import { DRequestFields } from "../data";
 import { inputTheme } from "../theme";
-import { MaskedInput } from "antd-mask-input";
+import InputMask from "react-input-mask";
+import { formatTelNumber } from "@/shared/lib/parse/phone";
 
 export const FormInputs = ({
   placeholder,
@@ -25,7 +26,7 @@ export const FormInputs = ({
     const { name, value } = event.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value,
+      [name]: formatTelNumber(value),
     }));
   };
 
@@ -47,6 +48,7 @@ export const FormInputs = ({
       );
     });
   };
+
   return (
     <>
       <ConfigProvider theme={inputTheme}>
@@ -58,21 +60,35 @@ export const FormInputs = ({
               alignItems: "flex-start",
             }}
           >
-            <Input
-              autoFocus
+            <InputMask
+              mask="+79999999999"
               onChange={handleInputChange}
               value={formData.phone}
-              prefix={
-                <UserOutlined
-                  style={{ color: "#cfcfcf" }}
-                  className="site-form-item-icon"
-                />
+              maskChar={null}
+              type="tel"
+            >
+              {
+                //@ts-ignore
+                (inputProps) => (
+                  <Input
+                    autoFocus
+                    maxLength={13}
+                    name="phone"
+                    size="large"
+                    autoComplete="tel"
+                    placeholder={placeholder}
+                    type="number"
+                    prefix={
+                      <UserOutlined
+                        style={{ color: "#cfcfcf" }}
+                        className="site-form-item-icon"
+                      />
+                    }
+                    {...inputProps}
+                  />
+                )
               }
-              name={"phone"}
-              size="large"
-              autoComplete="tel"
-              placeholder={placeholder}
-            />
+            </InputMask>
           </Form.Item>
           <Form.Item
             style={{

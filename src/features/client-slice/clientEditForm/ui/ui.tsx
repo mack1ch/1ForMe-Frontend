@@ -13,6 +13,8 @@ import {
 import { IComment } from "@/shared/interface/comment";
 import { DRequestFields } from "../data";
 import { isNonEmptyArray } from "@/shared/lib/check/emptyArray";
+import InputMask from "react-input-mask";
+import { formatTelNumber } from "@/shared/lib/parse/phone";
 export const ClientEditForm = ({ clientID }: { clientID: number }) => {
   const [formData, setFormData] = useState<IClientEditForm>({
     name: "",
@@ -31,10 +33,17 @@ export const ClientEditForm = ({ clientID }: { clientID: number }) => {
   const [isButtonLoading, setButtonLoading] = useState<boolean>(false);
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    if (name === "phone") {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: formatTelNumber(value.toString()),
+      }));
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
   };
   const handleSelectChange = (value: string) => {
     setFormData((prev) => ({
@@ -161,15 +170,27 @@ export const ClientEditForm = ({ clientID }: { clientID: number }) => {
               alignItems: "flex-start",
             }}
           >
-            <Input
+            <InputMask
+              mask="+79999999999"
               onChange={handleInputChange}
               value={formData.phone}
-              name={"phone"}
-              type="number"
-              maxLength={11}
-              size="large"
-              placeholder="Номер телефона"
-            />
+              maskChar={null}
+              type="tel"
+            >
+              {
+                //@ts-ignore
+                (inputProps) => (
+                  <Input
+                    {...inputProps}
+                    name={"phone"}
+                    type="tel"
+                    maxLength={13}
+                    size="large"
+                    placeholder="Номер телефона"
+                  />
+                )
+              }
+            </InputMask>
           </Form.Item>
           <Form.Item
             style={{
