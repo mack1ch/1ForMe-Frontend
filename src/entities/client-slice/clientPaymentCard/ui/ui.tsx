@@ -1,7 +1,10 @@
 import styles from "./ui.module.scss";
 import Arrow from "../../../../../public/icons/clients/chevronRightBlack.svg";
 import Image from "next/image";
-import { ITransaction } from "@/shared/interface/transaction";
+import {
+  ETransactionStatus,
+  ITransaction,
+} from "@/shared/interface/transaction";
 import { parseDateToDateAndMonth } from "@/shared/lib/parse/date";
 import { convertTimeFormat } from "../model";
 export const ClientPaymentCard = ({
@@ -26,6 +29,18 @@ export const ClientPaymentCard = ({
               `${transaction?.training?.slot.beginning} –
                 ${transaction?.training?.slot.end}`}
           </h5>
+          <h5
+            style={{
+              color:
+                transaction?.status?.toLowerCase() === "unpaid"
+                  ? "#9F0000"
+                  : "#6FAE48",
+            }}
+            className={styles.type}
+          >
+            {ETransactionStatus[transaction.status] ||
+              ETransactionStatus[transaction.status]}
+          </h5>
         </div>
         <div className={styles.right}>
           <div className={styles.right_date}>
@@ -33,10 +48,6 @@ export const ClientPaymentCard = ({
             <h5 className={styles.sport}>
               {transaction.tariff?.sport?.name} /{" "}
               {convertTimeFormat(transaction?.tariff.duration)}
-            </h5>
-            <h5 className={styles.type}>
-              {transaction.training?.type?.name ||
-                transaction.subscription?.trainings[0]?.type?.name}
             </h5>
           </div>
           <picture className={styles.icon}>

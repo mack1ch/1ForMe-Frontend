@@ -8,6 +8,7 @@ export interface ISubscription {
   client: IUser;
   transaction: ITransaction;
   trainings: ITraining[];
+  costForOne: number;
   expireAt: Date;
   finishedTrainingsCount: number;
   nextTraining: ITraining;

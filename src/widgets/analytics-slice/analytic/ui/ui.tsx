@@ -22,7 +22,6 @@ export const Analytic = () => {
   const [active, setActive] = useState(0);
   const openTab = (e: number) => setActive(+e);
   const [transactions, setTransactions] = useState<IApiTransaction[]>();
-
   const DTabItems: ITabItem[] = [
     {
       title: "День",

@@ -1,4 +1,5 @@
 export function formatMoneyToComma(input: string): string {
+  
   // Разделитель для тысяч
   const separator = ",";
 

@@ -17,6 +17,7 @@ export const ClientSubscriptionCard = ({
   const { day, month, dayOfWeek } = parseDateToDateAndMonth(
     subscription.nextTraining?.date.toString()
   );
+
   return (
     <>
       {subscription.client?.id ? (
@@ -52,7 +53,15 @@ export const ClientSubscriptionCard = ({
                     subscription.transaction?.tariff?.cost?.toString()
                   ) + " ₽"}
                 </h4>
-                <p className={styles.p}>
+                <p
+                  style={{
+                    color:
+                      subscription.transaction.status.toLowerCase() === "unpaid"
+                        ? "#9F0000"
+                        : "#6FAE48",
+                  }}
+                  className={styles.p}
+                >
                   {ETransactionStatus[subscription.transaction.status]}
                 </p>
               </div>
@@ -84,19 +93,13 @@ export const ClientSubscriptionCard = ({
                 <h5 className={styles.h5}>
                   Одно занятие:{" "}
                   <strong className={styles.strong}>
-                    {Math.round(
-                      subscription?.transaction?.tariff?.cost /
-                        subscription?.trainings?.length
-                    )}
+                    {subscription.costForOne}
                     {" ₽"}
                   </strong>
                 </h5>
                 <h5 className={styles.h5}>
-                  {Math.round(
-                    subscription?.transaction?.tariff?.cost /
-                      subscription?.trainings?.length
-                  )}
-                  ₽ × {subscription.trainings?.length} занятий:{" "}
+                  {subscription.costForOne}₽ × {subscription.trainings?.length}{" "}
+                  занятий:{" "}
                   <strong className={styles.strong}>
                     {" "}
                     {convertToCurrencyFormat(
@@ -105,8 +108,10 @@ export const ClientSubscriptionCard = ({
                   </strong>
                 </h5>
                 <h5 className={styles.h5}>
-                  До конца абонемента осталось:{" "}
-                  <strong className={styles.strong}>12 дней</strong>
+                  Абонемент действует:{" "}
+                  <strong className={styles.strong}>
+                    {subscription.transaction.tariff.subExpireAt} дней
+                  </strong>
                 </h5>
               </div>
               <div className={styles.trainingTags}>
@@ -150,7 +155,17 @@ export const ClientSubscriptionCard = ({
                     subscription.transaction.tariff.cost.toString()
                   ) + " ₽"}
                 </h4>
-                <p className={styles.p}>{subscription.transaction.status}</p>
+                <p
+                  style={{
+                    color:
+                      subscription.transaction.status.toLowerCase() === "unpaid"
+                        ? "#9F0000"
+                        : "#6FAE48",
+                  }}
+                  className={styles.p}
+                >
+                  {subscription.transaction.status}
+                </p>
               </div>
               <button
                 onClick={() => setCardOpen(!isCardOpen)}

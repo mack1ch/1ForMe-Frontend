@@ -63,19 +63,35 @@ export const Statistics = ({
             )}`
           : "";
       case "week":
-        return activeItem.week
-          ? ` ${
-              getWeekDateRange(activeItem.week, activeItem.year) ||
-              "" + " " + getMonthNameByMonthNumberWithEnds(activeItem.month)
-            } `
-          : "";
+        if (!activeItem.week) {
+          return "";
+        }
+
+        const weekRange = getWeekDateRange(activeItem.week, activeItem.year);
+        if (!weekRange) {
+          return "";
+        }
+
+        const parts = weekRange.split(" ");
+
+        // Извлекаем части из массива
+        const day1 = parts[0].split("–")[0]; // "27"
+        const day2 = parts[0].split("–")[1]; // "2"
+        const month1 = parts[1].split("–")[0]; // "май"
+        const month2 = parts[1].split("–")[1]; // "июн"
+
+        if (month1 === month2) {
+          return `${day1} - ${day2} ${month1}`;
+        } else {
+          return `${day1} ${month1} - ${day2} ${month2}`;
+        }
       case "month":
         return `за ${getMonthNameByMonthNumber(activeItem.month)}`;
       default:
         return "Загрузка...";
     }
   };
-  
+
   return (
     <>
       {analytics && analytics?.length ? (

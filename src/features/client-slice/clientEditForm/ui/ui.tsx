@@ -107,17 +107,21 @@ export const ClientEditForm = ({ clientID }: { clientID: number }) => {
   const onButtonSubmit = async () => {
     try {
       setButtonLoading(true);
-      const response = await changedClientData(formData, clientID);
+      const response: any = await changedClientData(formData, clientID);
       const comment =
         formData.comment &&
         formData.comment?.length > 0 &&
         (await changeClientCommentByID(clientID, formData.comment));
-      if (response instanceof Error && comment instanceof Error) {
+      if (response instanceof Error || comment instanceof Error) {
         message.open({
           type: "error",
-          content:
-            "Неудалось выполнить запрос, проверьте правильность введенных данных",
+          content: `${
+            response.response.data.output.driverError.errno === 1062
+              ? "Такой номер уже существует"
+              : "Неудалось выполнить запрос, проверьте правильность введенных данных"
+          }`,
         });
+
         setButtonLoading(false);
         return;
       } else {
@@ -138,7 +142,6 @@ export const ClientEditForm = ({ clientID }: { clientID: number }) => {
   const currentChatLabel = chatSelectOptions?.find(
     (option) => option.value.toString() === formData.messenger?.toString()
   );
-
   return (
     <>
       <Form style={{ width: "100%" }} name="validateOnly" layout="vertical">

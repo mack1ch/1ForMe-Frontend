@@ -269,10 +269,6 @@ export const CreateNewTraining = ({
         setButtonLoading(false);
       }
     } catch {
-      // message.open({
-      //   type: "error",
-      //   content: "Проблема на сервере, мы уже работаем над устранением",
-      // });
       setButtonLoading(false);
     }
   };

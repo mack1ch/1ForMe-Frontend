@@ -260,6 +260,13 @@ export const CreateSubscription = ({ clientID }: { clientID?: number }) => {
             tariff.trainingAmount === selectTariff.trainingAmount!! - 1
         )
       : undefined;
+  const tariffValueIfIsFirstWorkOutFalse =
+    !isFirstWorkOut && selectTariff?.trainingAmount
+      ? tariffs?.find(
+          (tariff) =>
+            tariff.trainingAmount === selectTariff.trainingAmount!! + 1
+        )
+      : undefined;
   useEffect(() => {
     if (tariffValueIfIsFirstWorkOut) {
       setFormData((prev) => ({
@@ -267,8 +274,14 @@ export const CreateSubscription = ({ clientID }: { clientID?: number }) => {
         tariffID: tariffValueIfIsFirstWorkOut.id,
       }));
       setSelectTariff(tariffValueIfIsFirstWorkOut);
+    } else if (tariffValueIfIsFirstWorkOutFalse) {
+      setFormData((prev) => ({
+        ...prev,
+        tariffID: tariffValueIfIsFirstWorkOutFalse.id,
+      }));
+      setSelectTariff(tariffValueIfIsFirstWorkOutFalse);
     }
-  }, [selectTariff, tariffValueIfIsFirstWorkOut]);
+  }, [selectTariff, tariffValueIfIsFirstWorkOut, isFirstWorkOut]);
   const disabledDate: RangePickerProps["disabledDate"] = (current) => {
     // Can not select days before today and today
     return current && current < dayjs().startOf("day");

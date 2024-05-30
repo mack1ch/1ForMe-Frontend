@@ -64,7 +64,20 @@ export const TrainingCard = ({
                   <h4 className={styles.time}>
                     {training.slot.beginning} - {training.slot.end}
                   </h4>
-                  <h4 className={styles.status}>
+                  <h4
+                    style={{
+                      color: training.subscription
+                        ? training.subscription.transaction.status.toLowerCase() ===
+                          "unpaid"
+                          ? "#9F0000"
+                          : "#6FAE48"
+                        : training.transaction?.status?.toLowerCase() ===
+                          "unpaid"
+                        ? "#9F0000"
+                        : "#6FAE48",
+                    }}
+                    className={styles.status}
+                  >
                     {isMyTraining
                       ? ETransactionStatus[
                           training.subscription?.transaction.status

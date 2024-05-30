@@ -37,12 +37,30 @@ export const StatisticsGraphItem = ({
                 ?.slice(0, 3)
                 .toLocaleLowerCase()
           );
+
         case "week":
-          return (
-            (analytics.week &&
-              getWeekDateRange(analytics.week, analytics.year)) ||
-            "" + " " + getMonthNameByMonthNumberWithEnds(analytics.month)
-          );
+          if (!analytics.week) {
+            return "";
+          }
+
+          const weekRange = getWeekDateRange(analytics.week, analytics.year);
+          if (!weekRange) {
+            return "";
+          }
+
+          const parts = weekRange.split(" ");
+
+          // Извлекаем части из массива
+          const day1 = parts[0].split("–")[0]; // "27"
+          const day2 = parts[0].split("–")[1]; // "2"
+          const month1 = parts[1].split("–")[0]; // "май"
+          const month2 = parts[1].split("–")[1]; // "июн"
+
+          if (month1 === month2) {
+            return `${day1} - ${day2} ${month1}`;
+          } else {
+            return `${day1} ${month1} - ${day2} ${month2}`;
+          }
         case "month":
           return getMonthNameByMonthNumber(analytics.month);
 
