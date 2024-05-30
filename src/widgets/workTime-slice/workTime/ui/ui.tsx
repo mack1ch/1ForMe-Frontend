@@ -120,13 +120,13 @@ export const WorkTime = () => {
                       isArrowDisabled={!isComponentDisabled}
                     />
                   )}
-                  <button
+                  {/* <button
                     // onClick={() => addEmptySlot(day as TSlotDay)}
                     className={styles.addNewSlot}
                   >
                     Добавить новый слот{" "}
                     <Image src={Plus} width={16} height={16} alt="Плюс" />
-                  </button>
+                  </button> */}
                 </div>
               </>
             </div>

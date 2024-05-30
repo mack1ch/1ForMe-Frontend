@@ -165,7 +165,7 @@ export const CreateSubscription = ({ clientID }: { clientID?: number }) => {
       });
       return newSelectedSlots;
     });
-  }, [isFirstWorkOut]);
+  }, [isFirstWorkOut, selectedSlots]);
 
   const handleTrainingChange = async (
     index: number,
@@ -200,8 +200,8 @@ export const CreateSubscription = ({ clientID }: { clientID?: number }) => {
     // Добавляем этот блок кода для предотвращения автоматического выбора слота для других тренировок
     setSelectedSlots((prevSelectedSlots) => {
       const newSelectedSlots = { ...prevSelectedSlots };
-      if (!newSelectedSlots[trainings[index].date || ""]) {
-        newSelectedSlots[trainings[index].date || ""] = null;
+      if (!newSelectedSlots[trainings[index]?.date || ""]) {
+        newSelectedSlots[trainings[index]?.date || ""] = null;
       }
       return newSelectedSlots;
     });

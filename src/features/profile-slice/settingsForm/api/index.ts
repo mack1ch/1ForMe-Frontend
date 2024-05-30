@@ -2,6 +2,7 @@ import { instanceLogged } from "@/shared/api/axios-config";
 import { IUser } from "@/shared/interface/user";
 import { ISettingsFormUser } from "../interface";
 import { ISport } from "@/shared/interface/sport";
+import { convertDateFormatToDoteFormat } from "@/shared/lib/parse/date";
 
 export const getAuthUser = async (): Promise<IUser | Error> => {
   try {
@@ -31,7 +32,7 @@ export const changeAuthUserData = async (
       phone: formData.phone,
       description: formData.description,
       experience: formData.experience,
-      birthday: formData.birthday,
+      birthday: convertDateFormatToDoteFormat(formData.birthday || ""),
       sports: formData.sports,
     });
 

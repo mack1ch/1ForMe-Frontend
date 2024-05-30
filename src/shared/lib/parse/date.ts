@@ -250,8 +250,8 @@ export function formatDateToDayAndDateFormat(inputDate: string): string {
   return `${dayOfWeek}, ${day} ${month}`;
 }
 
-export function convertDateFormatToDoteFormat(dateString: string): string {
-  if (dateString.length === 0) return "";
+export function convertDateFormatToDoteFormat(dateString?: string): string {
+  if (dateString?.length === 0 || !dateString) return "";
   const [day, month, year] = dateString.split(".");
   return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
 }

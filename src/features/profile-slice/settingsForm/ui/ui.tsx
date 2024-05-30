@@ -17,6 +17,7 @@ export const SettingsForm = () => {
   const [isButtonLoading, setButtonLoading] = useState<boolean>(false);
   const [isButtonDisabled, setButtonDisabled] = useState<boolean>(false);
   const [allSports, setAllSports] = useState<ISelectOptions[]>();
+  const dateFormat = "DD.MM.YYYY";
   const [formData, setFormData] = useState<ISettingsFormUser>({
     name: "",
     surname: "",
@@ -126,15 +127,6 @@ export const SettingsForm = () => {
     }
   };
 
-  const getSelectedSportsLabels = (): React.ReactNode[] => {
-    return (
-      formData.sports?.map((sportId) => {
-        const sport = allSports?.find((s) => s.value === sportId);
-        return sport ? sport.label : sportId;
-      }) || []
-    );
-  };
-
   return (
     <>
       <Form style={{ width: "100%" }} name="validateOnly" layout="vertical">
@@ -215,6 +207,7 @@ export const SettingsForm = () => {
             }}
           >
             <DatePicker
+              format={dateFormat}
               inputReadOnly
               placeholder="Выберите день рождения"
               style={{ width: "100%" }}

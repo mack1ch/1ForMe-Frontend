@@ -245,7 +245,7 @@ export const CreateNewTraining = ({
       const response: any = editTrainingData
         ? await changeTraining(formData, editTrainingData.id)
         : await createTraining(formData);
-      console.log(response);
+
       if (response instanceof Error) {
         message.open({
           type: "error",
