@@ -63,10 +63,12 @@ export const createNewSlot = async (
   }
 };
 
-export const getSlots = async (): Promise<IClubSlot[] | Error> => {
+export const getSlots = async (
+  studioID: number | string
+): Promise<IClubSlot[] | Error> => {
   try {
     const { data }: { data: IClubSlot[] } = await instanceLogged.get(
-      `/clubs/1/slots`
+      `/studios/${studioID}/slots`
     );
     return data;
   } catch (error) {

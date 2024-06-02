@@ -25,7 +25,7 @@ export const getSlots = async (
 ): Promise<ISlotsForStudio[] | Error> => {
   try {
     const { data }: { data: ISlotsForStudio[] } = await instanceLogged.get(
-      `/studios/${studioID}/slots`
+      `studios/${studioID}/clubs/slots`
     );
     return data;
   } catch (error) {

@@ -8,6 +8,7 @@ export interface IRegisterWorkTimeCard {
   date?: string;
   startRender: string;
   endRender: string;
+  studioID: number | string;
   studioRender: string;
 }
 

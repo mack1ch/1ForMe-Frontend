@@ -18,19 +18,17 @@ import {
 import { IStudio } from "@/shared/interface/user";
 import Trash from "../../../../../public/icons/workTime/trash.svg";
 import { IRegisterWorkTimeCard, ISelectOptions } from "../interface";
-import { getOptionLabel } from "../model";
+import { findOptionById, getOptionLabel } from "../model";
 
 export const RegisterWorkTimeCard = ({
   style,
   slot,
   isArrowDisabled = false,
-  dayOfWeek,
   date,
 }: {
   style?: CSSProperties;
   slot?: ITrainerSlot;
   isArrowDisabled?: boolean;
-  dayOfWeek?: string;
   date?: string;
 }) => {
   const [isCardOpen, setCardOpen] = useState(false);
@@ -52,6 +50,7 @@ export const RegisterWorkTimeCard = ({
     studio: slot?.studio?.name || "",
     startRender: slot?.beginning?.beginning || "",
     endRender: slot?.end?.end || "",
+    studioID: slot?.studio?.id || "",
     date: date,
     studioRender: slot?.studio?.name || "",
   });
@@ -59,9 +58,15 @@ export const RegisterWorkTimeCard = ({
   useEffect(() => {
     async function getStudios() {
       const studios: IStudio[] | Error = await getAllStudios();
-      const slots = await getSlots();
-      if (studios instanceof Error || slots instanceof Error) return;
+      if (studios instanceof Error) return;
       setStudios(studios);
+    }
+    getStudios();
+  }, []);
+  useEffect(() => {
+    async function getSlotsByIDStudio() {
+      const slots = await getSlots(inputValues.studioID);
+      if (slots instanceof Error) return;
       setOptionsStartSlots((prev) =>
         slots.map((item) => ({
           label: item.beginning,
@@ -75,8 +80,8 @@ export const RegisterWorkTimeCard = ({
         }))
       );
     }
-    getStudios();
-  }, []);
+    getSlotsByIDStudio();
+  }, [inputValues.studioID]);
 
   useEffect(() => {
     if (
@@ -108,7 +113,15 @@ export const RegisterWorkTimeCard = ({
     key: string,
     options?: ISelectOptions[]
   ) => {
-    if (options) {
+    if (key === "studio" && options) {
+      console.log(value);
+      setInputValues((prev) => ({
+        ...prev,
+        [key]: value,
+        [`${key}Render`]: getOptionLabel(value, options),
+        studioID: value,
+      }));
+    } else if (options) {
       setInputValues((prev) => ({
         ...prev,
         [key]: value,
@@ -220,11 +233,14 @@ export const RegisterWorkTimeCard = ({
                 <div className={styles.chooseStudio}>
                   <label className={styles.label}>Студия:</label>
                   <Select
-                    onChange={(value) =>
+                    onChange={(value: string) =>
                       onSelectChange(value, "studio", studiosForSelectOptions)
                     }
                     options={studiosForSelectOptions}
-                    defaultValue={slot?.studio?.name || undefined}
+                    value={findOptionById(
+                      inputValues.studioID.toString(),
+                      studiosForSelectOptions
+                    )?.label?.toString()}
                     placeholder="Выберите студию"
                     style={{ width: "60%" }}
                   />

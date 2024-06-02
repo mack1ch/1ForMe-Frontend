@@ -116,17 +116,9 @@ export const WorkTime = () => {
                   ) : (
                     <RegisterWorkTimeCard
                       date={convertToISODate(dayOfMonth, monthName)}
-                      dayOfWeek={day}
                       isArrowDisabled={!isComponentDisabled}
                     />
                   )}
-                  {/* <button
-                    // onClick={() => addEmptySlot(day as TSlotDay)}
-                    className={styles.addNewSlot}
-                  >
-                    Добавить новый слот{" "}
-                    <Image src={Plus} width={16} height={16} alt="Плюс" />
-                  </button> */}
                 </div>
               </>
             </div>
