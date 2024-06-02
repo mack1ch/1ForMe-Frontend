@@ -52,6 +52,9 @@ export const TrainingCard = ({
                     {training.subscription
                       ? training?.subscription.transaction.tariff?.name
                       : training?.type?.name}
+                    {training.subscription
+                      ? training.subscription.transaction.tariff.type
+                      : training?.transaction?.tariff?.type}
                   </h5>
                 </div>
               </div>

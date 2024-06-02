@@ -7,6 +7,7 @@ export interface ITariff {
   cost: number;
   sport: ISport;
   duration: string;
+  type: string;
   trainingAmount?: number;
   subExpireAt?: number; // Длительность абонемента
   clientsAmount: number;

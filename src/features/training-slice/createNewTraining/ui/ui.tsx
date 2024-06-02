@@ -1,10 +1,11 @@
-import { Button, Form, message, Select, TimePickerProps } from "antd";
+import { Button, Form, message, Modal, Select, TimePickerProps } from "antd";
 import styles from "./ui.module.scss";
 import { DatePicker } from "antd";
-import { useEffect, useState } from "react";
+import { Children, useEffect, useState } from "react";
 
 import { IUser } from "@/shared/interface/user";
 import {
+  cancelTrainerByID,
   changeTraining,
   createTraining,
   getClubs,
@@ -42,6 +43,8 @@ export const CreateNewTraining = ({
 }) => {
   const [isTrainingEnd, setIsTrainingEnd] = useState<boolean>(true);
   const [tariffArray, setTariffArray] = useState<ITariff[]>();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [IsModalConfirmLoading, setIsModalConfirmLoading] = useState(false);
   const [formData, setFormData] = useState<IFormData>({
     date: "",
     slotID: null,
@@ -288,8 +291,55 @@ export const CreateNewTraining = ({
     }
   }, [date, slots]);
 
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = async () => {
+    const trainingCancel = await cancelTrainerByID(editTrainingData?.id || "");
+
+    if (trainingCancel instanceof Error) {
+      message.open({
+        type: "error",
+        content: "Неудалось выполнить запрос",
+      });
+    } else {
+      message.open({
+        type: "success",
+        content: "Тренировка отменена",
+      });
+      router.push("/app/dashboard");
+    }
+
+    setIsModalConfirmLoading(true);
+    setTimeout(() => {
+      setIsModalOpen(false);
+      setIsModalConfirmLoading(false);
+    }, 2000);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <>
+      <Modal
+        title="Вы действительно хотите отменить тренировку?"
+        open={isModalOpen}
+        onOk={handleOk}
+        okType="danger"
+        confirmLoading={IsModalConfirmLoading}
+        okText="Удалить"
+        cancelText="Отмена"
+        onCancel={handleCancel}
+      >
+        <p>
+          Если вы отмените тренировку, то деньги будут возвращены клиенту, а
+          слот станет свободным
+        </p>
+      </Modal>
+
       <Form style={{ width: "100%" }} name="validateOnly" layout="vertical">
         <div className={styles.formLayout}>
           {!editTrainingData && (
@@ -429,20 +479,24 @@ export const CreateNewTraining = ({
             </div>
           )}
           {editTrainingData && (
-            <Form.Item
-              style={{
-                width: "100%",
-                textAlign: "start",
-                alignItems: "center",
-              }}
-            >
-              <span className={styles.time}>
-                <p className={styles.p}>
-                  {!isTrainingEnd && `Тренировка через${" "}`}
-                  <strong className={styles.strong}>{timeUntilTraining}</strong>
-                </p>
-              </span>
-            </Form.Item>
+            <>
+              <Form.Item
+                style={{
+                  width: "100%",
+                  textAlign: "start",
+                  alignItems: "center",
+                }}
+              >
+                <span className={styles.time}>
+                  <p className={styles.p}>
+                    {!isTrainingEnd && `Тренировка через${" "}`}
+                    <strong className={styles.strong}>
+                      {timeUntilTraining}
+                    </strong>
+                  </p>
+                </span>
+              </Form.Item>
+            </>
           )}
           <div className={styles.trainingCostLayout}>
             <label className={styles.label}>Стоимость тренировки:</label>
@@ -454,6 +508,7 @@ export const CreateNewTraining = ({
               {selectTariffInArray?.cost && " ₽"}
             </p>
           </div>
+
           <Form.Item
             style={{
               width: "100%",
@@ -478,6 +533,25 @@ export const CreateNewTraining = ({
               Сохранить
             </Button>
           </Form.Item>
+          {editTrainingData && !isTrainingEnd && (
+            <Form.Item
+              style={{
+                marginTop: "-12px",
+                width: "100%",
+                textAlign: "start",
+                alignItems: "center",
+              }}
+            >
+              <Button
+                onClick={showModal}
+                style={{ width: "100%" }}
+                size="large"
+                danger
+              >
+                Отменить тренировку
+              </Button>
+            </Form.Item>
+          )}
         </div>
       </Form>
     </>

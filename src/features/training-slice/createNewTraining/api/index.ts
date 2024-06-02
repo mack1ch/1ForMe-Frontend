@@ -18,6 +18,19 @@ export const getTrainerClients = async (): Promise<IUser[] | Error> => {
   }
 };
 
+export const cancelTrainerByID = async (
+  trainingID: number | string
+): Promise<ITraining | Error> => {
+  try {
+    const { data }: { data: ITraining } = await instanceLogged.post(
+      `/trainings/cancel/${trainingID}`
+    );
+    return data;
+  } catch (error) {
+    return error as Error;
+  }
+};
+
 export const getTariffs = async (): Promise<ITariff[] | Error> => {
   try {
     const { data }: { data: ITariff[] } = await instanceLogged.get(
@@ -43,7 +56,6 @@ export const getSlots = async (
   clubID: number | string
 ): Promise<IClubSlot[] | Error> => {
   try {
-    console.log(date);
     const { data }: { data: IClubSlot[] } = await instanceLogged.get(
       `/clubs/${clubID}/slots?date=${convertDateFormatToDoteFormat(date)}`
     );
