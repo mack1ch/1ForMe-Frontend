@@ -80,8 +80,10 @@ export const NewClientForm = () => {
   };
   const handleSubmit = async () => {
     try {
-      const res = await createClient(inputValues);
-
+      const res: any = await createClient(inputValues);
+      if (res instanceof Error) {
+        message.error(res.message);
+      }
       if (!(res instanceof Error)) {
         successMassage();
         router.push("/app/clients");
