@@ -296,6 +296,7 @@ export const CreateNewTraining = ({
   };
 
   const handleOk = async () => {
+    setIsModalConfirmLoading(true);
     const trainingCancel = await cancelTrainerByID(editTrainingData?.id || "");
 
     if (trainingCancel instanceof Error) {
@@ -303,19 +304,17 @@ export const CreateNewTraining = ({
         type: "error",
         content: "Неудалось выполнить запрос",
       });
+      setIsModalOpen(false);
+      setIsModalConfirmLoading(false);
     } else {
       message.open({
         type: "success",
         content: "Тренировка отменена",
       });
-      router.push("/app/dashboard");
-    }
-
-    setIsModalConfirmLoading(true);
-    setTimeout(() => {
       setIsModalOpen(false);
       setIsModalConfirmLoading(false);
-    }, 2000);
+      router.push("/app/dashboard");
+    }
   };
 
   const handleCancel = () => {
