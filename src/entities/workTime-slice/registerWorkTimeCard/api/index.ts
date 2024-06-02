@@ -48,7 +48,7 @@ export const createNewSlot = async (
   const reqData = {
     beginning: inputValues.start,
     end: inputValues.end,
-    studio: inputValues.studio,
+    studio: inputValues.studioID,
     date: inputValues.date,
   };
 
