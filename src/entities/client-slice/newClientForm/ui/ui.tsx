@@ -81,6 +81,7 @@ export const NewClientForm = () => {
   const handleSubmit = async () => {
     try {
       const res: any = await createClient(inputValues);
+      console.log(res);
       if (res instanceof Error) {
         message.error(res.message);
       }
