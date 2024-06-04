@@ -269,10 +269,7 @@ export const CreateNewTraining = ({
           message.error("Ошибка при создании тренировки");
           return;
         }
-
-        console.log("Создана тренировка на:", currentDate.format(dateFormat));
       } catch (error) {
-        console.error("Ошибка при создании тренировки:", error);
         message.error("Не удалось создать тренировку");
         return;
       }
