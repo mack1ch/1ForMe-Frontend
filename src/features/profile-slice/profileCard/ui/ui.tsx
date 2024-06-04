@@ -41,11 +41,13 @@ export const ProfileCard = () => {
                 </p>
               </div>
             </div>
-            {user.trainerProfile?.studios?.map((studio) => (
-              <div key={studio.id} className={styles.studio}>
-                {studio.name}
-              </div>
-            ))}
+            <div className={styles.studiosRender}>
+              {user.trainerProfile?.studios?.map((studio) => (
+                <div key={studio.id} className={styles.studio}>
+                  {studio.name}
+                </div>
+              ))}
+            </div>
             <div className={styles.tags}>
               {user.trainerProfile?.experience && (
                 <div className={styles.experience}>

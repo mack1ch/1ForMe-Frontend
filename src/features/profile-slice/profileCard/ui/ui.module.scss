@@ -36,22 +36,27 @@
       }
     }
   }
-  .studio {
-    display: inline-flex;
-    padding: 8px 12px;
-    justify-content: center;
+  .studiosRender {
+    display: flex;
     align-items: center;
-    border-radius: 100px;
-    background: #e6f36c;
+    flex-wrap: wrap;
+    gap: 4px;
+    .studio {
+      display: inline-flex;
+      padding: 8px 12px;
+      justify-content: center;
+      align-items: center;
+      border-radius: 100px;
+      background: #e6f36c;
 
-    backdrop-filter: blur(40px);
-    color: #393939;
-    text-align: center;
+      backdrop-filter: blur(40px);
+      color: #000;
+      text-align: center;
 
-    font-size: 15px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 22px;
+      font-size: 13px;
+      font-style: normal;
+      font-weight: 600;
+    }
   }
   .description {
     display: flex;
