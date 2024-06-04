@@ -3,7 +3,12 @@
 import styles from "./ui.module.scss";
 import { IUser } from "@/shared/interface/user";
 import { ChangeEvent, useEffect, useState } from "react";
-import { changeAuthUserData, getAllSports, getAuthUser } from "../api";
+import {
+  changeAuthUserData,
+  getAllSports,
+  getAllStudios,
+  getAuthUser,
+} from "../api";
 import { Button, Form, Input, message, Select, TimePickerProps } from "antd";
 import { DRequestFields } from "../data";
 import { ISelectOptions, ISettingsFormUser } from "../interface";
@@ -18,6 +23,7 @@ const { TextArea } = Input;
 export const SettingsForm = () => {
   const [isButtonLoading, setButtonLoading] = useState<boolean>(false);
   const [isButtonDisabled, setButtonDisabled] = useState<boolean>(false);
+  const [allStudios, setAllStudios] = useState<ISelectOptions[]>();
   const [allSports, setAllSports] = useState<ISelectOptions[]>();
   const dateFormat = "DD.MM.YYYY";
   const [formData, setFormData] = useState<ISettingsFormUser>({
@@ -29,13 +35,25 @@ export const SettingsForm = () => {
     description: "",
     birthDayInput: null,
     sports: undefined,
+    studiosID: undefined,
   });
   useEffect(() => {
     async function getUser() {
       const authUser: IUser | Error = await getAuthUser();
       const allSports = await getAllSports();
-
-      if (authUser instanceof Error || allSports instanceof Error) return;
+      const allStudios = await getAllStudios();
+      if (
+        authUser instanceof Error ||
+        allSports instanceof Error ||
+        allStudios instanceof Error
+      )
+        return;
+      setAllStudios((prev) =>
+        allStudios.map((item) => ({
+          value: item.id.toString(),
+          label: item.name + " " + item.address,
+        }))
+      );
       setAllSports((prev) =>
         allSports.map((item) => ({
           value: item.id.toString(),
@@ -101,6 +119,12 @@ export const SettingsForm = () => {
       sports: sports,
     }));
   };
+  const handleStudiosSelectChange = (studios: string[] | number[]) => {
+    setFormData((prev) => ({
+      ...prev,
+      studiosID: studios,
+    }));
+  };
   const onChangeBirthday: TimePickerProps["onChange"] = (time, timeString) => {
     setFormData((prev) => ({
       ...prev,
@@ -135,7 +159,7 @@ export const SettingsForm = () => {
       setButtonLoading(false);
     }
   };
-
+  console.log(formData.studiosID);
   return (
     <>
       <Form style={{ width: "100%" }} name="validateOnly" layout="vertical">
@@ -213,6 +237,25 @@ export const SettingsForm = () => {
               onChange={handleSportSelectChange}
               options={allSports}
               value={formData.sports}
+              getPopupContainer={(trigger) => trigger.parentNode}
+            />
+          </Form.Item>
+          <Form.Item
+            required
+            label="Ваши студии"
+            style={{
+              width: "100%",
+              textAlign: "start",
+              alignItems: "flex-start",
+            }}
+          >
+            <Select
+              mode="multiple"
+              placeholder="Выберите студии для работы"
+              size="large"
+              onChange={handleStudiosSelectChange}
+              options={allStudios}
+              value={formData.studiosID}
               getPopupContainer={(trigger) => trigger.parentNode}
             />
           </Form.Item>

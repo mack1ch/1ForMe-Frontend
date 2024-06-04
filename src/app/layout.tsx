@@ -2,11 +2,12 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.scss";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
-import { usePathname } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "1ForMe",
-  description: "1ForMe",
+  description:
+    "1ForMe - студия персональных и сплит тренировок для двоих. Место где можно побыть наедине с собой.",
+  manifest: "/manifest.json",
 };
 
 const RF_Dewi = localFont({

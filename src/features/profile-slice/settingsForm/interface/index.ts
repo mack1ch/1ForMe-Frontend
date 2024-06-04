@@ -8,6 +8,7 @@ export interface ISettingsFormUser {
   birthDayInput?: dayjs.Dayjs | null;
   experience?: number;
   phone: string;
+  studiosID?: string[] | number[];
   description?: string;
   sports?: string[] | number[];
 }

@@ -1,0 +1,29 @@
+{
+  "name": "1ForMe для студий",
+  "display_override": "standalone",
+  "orientation": "natural",
+  "short_name": "1ForMe",
+  "description": "1ForMe",
+  "start_url": "/",
+  "background_color": "#ffffff",
+  "theme_color": "#E6F36C",
+  "display": "standalone",
+  "lang": "ru",
+  "dir": "ltr",
+  "categories": ["business", "studios"],
+  "scope": "/",
+  "icons": [
+    {
+      "src": "./favicon.jpg",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon.jpg",
+      "sizes": "1025x1025",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
