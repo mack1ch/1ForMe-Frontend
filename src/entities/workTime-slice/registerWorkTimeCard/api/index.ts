@@ -33,7 +33,7 @@ export const editSlotByID = async (
       {
         beginning: inputValues.start,
         end: inputValues.end,
-        studio: inputValues.studio,
+        studio: inputValues.studioID,
       }
     );
     return data;
