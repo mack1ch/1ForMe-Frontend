@@ -43,6 +43,7 @@ export const CreateNewTraining = ({
 }) => {
   const [isTrainingEnd, setIsTrainingEnd] = useState<boolean>(true);
   const [tariffArray, setTariffArray] = useState<ITariff[]>();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [IsModalConfirmLoading, setIsModalConfirmLoading] = useState(false);
   const [formData, setFormData] = useState<IFormData>({
@@ -53,7 +54,7 @@ export const CreateNewTraining = ({
     tariffID: null,
     clubID: null,
   });
-
+  const temporaryFormData = { ...editTrainingData };
   const [selectClientsOptions, setSelectClientsOptions] =
     useState<ISelectOptions[]>();
   const dateFormat = "DD.MM.YYYY";
@@ -242,7 +243,6 @@ export const CreateNewTraining = ({
       const response = editTrainingData
         ? await changeTraining(formData, editTrainingData.id)
         : await createTraining(formData);
-      
       if (response instanceof Error) {
         message.open({
           type: "error",
@@ -450,7 +450,10 @@ export const CreateNewTraining = ({
           {slots && (
             <div className={styles.slotWrap}>
               {slots?.map((slot) => {
-                if (slot.isAvailable) {
+                if (
+                  slot.isAvailable ||
+                  temporaryFormData?.slot?.id === slot.id
+                ) {
                   return (
                     <button
                       onClick={() => handleSlotSelection(slot.id)}
