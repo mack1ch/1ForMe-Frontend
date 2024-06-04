@@ -114,7 +114,7 @@ export const RegisterWorkTimeCard = ({
     options?: ISelectOptions[]
   ) => {
     if (key === "studio" && options) {
-      console.log(value);
+     
       setInputValues((prev) => ({
         ...prev,
         [key]: value,

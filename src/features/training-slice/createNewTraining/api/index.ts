@@ -55,9 +55,10 @@ export const getSlots = async (
   date: string,
   clubID: number | string
 ): Promise<IClubSlot[] | Error> => {
+  const formatDate = date && convertDateFormatToDoteFormat(date);
   try {
     const { data }: { data: IClubSlot[] } = await instanceLogged.get(
-      `/clubs/${clubID}/slots?date=${convertDateFormatToDoteFormat(date)}`
+      `/clubs/${clubID}/slots?date=${formatDate}`
     );
     return data;
   } catch (error) {

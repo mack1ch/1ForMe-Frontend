@@ -15,6 +15,7 @@ export interface ITraining {
   isFinished: boolean;
   date: string;
   club: IClub;
+  isCanceled: boolean;
   transaction: ITransaction;
 }
 

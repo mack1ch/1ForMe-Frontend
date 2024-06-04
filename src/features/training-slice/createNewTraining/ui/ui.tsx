@@ -191,12 +191,6 @@ export const CreateNewTraining = ({
       date: dateString,
       dateInput: date,
     }));
-    async function fetchSlots() {
-      const slots = await getSlots(formData.date.toString(), formData?.clubID!);
-      if (slots instanceof Error) return;
-      setSlots(slots);
-    }
-    fetchSlots();
   };
   useEffect(() => {
     async function fetchSlots() {
@@ -245,10 +239,10 @@ export const CreateNewTraining = ({
   const handleCreateTraining = async () => {
     try {
       setButtonLoading(true);
-      const response: any = editTrainingData
+      const response = editTrainingData
         ? await changeTraining(formData, editTrainingData.id)
         : await createTraining(formData);
-
+      
       if (response instanceof Error) {
         message.open({
           type: "error",
@@ -257,18 +251,16 @@ export const CreateNewTraining = ({
         setButtonLoading(false);
         return;
       } else {
-        router.push(`/app/dashboard`);
-
         message.open({
           type: "success",
           content: `Тренировка успешно ${
             editTrainingData ? "изменена" : "создана"
           } на ${formatDateToDayAndDateFormat(
-            response.date.toString().toLowerCase()
+            response[0].date.toString().toLowerCase()
           )}`,
-
           duration: 4,
         });
+        router.push(`/app/dashboard`);
         setButtonLoading(false);
       }
     } catch {
@@ -329,8 +321,8 @@ export const CreateNewTraining = ({
         onOk={handleOk}
         okType="danger"
         confirmLoading={IsModalConfirmLoading}
-        okText="Удалить"
-        cancelText="Отмена"
+        okText="Отменить тренировка"
+        cancelText="Выйти"
         onCancel={handleCancel}
       >
         <p>
@@ -532,25 +524,27 @@ export const CreateNewTraining = ({
               Сохранить
             </Button>
           </Form.Item>
-          {editTrainingData && !isTrainingEnd && (
-            <Form.Item
-              style={{
-                marginTop: "-12px",
-                width: "100%",
-                textAlign: "start",
-                alignItems: "center",
-              }}
-            >
-              <Button
-                onClick={showModal}
-                style={{ width: "100%" }}
-                size="large"
-                danger
+          {editTrainingData &&
+            !isTrainingEnd &&
+            !editTrainingData.subscription && (
+              <Form.Item
+                style={{
+                  marginTop: "-12px",
+                  width: "100%",
+                  textAlign: "start",
+                  alignItems: "center",
+                }}
               >
-                Отменить тренировку
-              </Button>
-            </Form.Item>
-          )}
+                <Button
+                  onClick={showModal}
+                  style={{ width: "100%" }}
+                  size="large"
+                  danger
+                >
+                  Отменить тренировку
+                </Button>
+              </Form.Item>
+            )}
         </div>
       </Form>
     </>
