@@ -4,6 +4,25 @@
   align-items: center;
   gap: 0px;
   width: 100%;
+  .repeatTraining {
+    border-radius: 20px;
+    background: #fff;
+    display: flex;
+    width: 100%;
+    padding: 16px;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    margin-bottom: 12px;
+    .switchLabel {
+      color: #000;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+    }
+  }
   .trainingCostLayout {
     display: flex;
     width: 100%;

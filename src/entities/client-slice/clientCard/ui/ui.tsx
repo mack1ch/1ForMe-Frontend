@@ -8,12 +8,13 @@ export const ClientCard = ({ client }: { client: IUser }) => {
   const { day, month, dayOfWeek } = parseDateToDateAndMonth(
     client.closestTraining?.date.toString() || ""
   );
+
   return (
     <>
       <Link style={{ width: "100%" }} href={`/app/clients/client/${client.id}`}>
         <article className={styles.article}>
           <h3 className={styles.user}>
-            {client?.name + " " + client?.surname}
+            {client?.name} {client.surname}
           </h3>
           <div className={styles.training}>
             <span className={styles.divider} />

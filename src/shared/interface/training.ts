@@ -17,6 +17,7 @@ export interface ITraining {
   club: IClub;
   isCanceled: boolean;
   transaction: ITransaction;
+  createdAt: string;
 }
 
 export interface ITrainType {

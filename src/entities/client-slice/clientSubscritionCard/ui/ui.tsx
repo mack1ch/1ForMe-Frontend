@@ -8,6 +8,7 @@ import { ISubscription } from "@/shared/interface/subscriptions";
 import { convertToCurrencyFormat } from "@/shared/lib/parse/money";
 import { parseDateToDateAndMonth } from "@/shared/lib/parse/date";
 import { ETransactionStatus } from "@/shared/interface/transaction";
+import { addDaysToDate } from "../model";
 export const ClientSubscriptionCard = ({
   subscription,
 }: {
@@ -108,9 +109,12 @@ export const ClientSubscriptionCard = ({
                   </strong>
                 </h5>
                 <h5 className={styles.h5}>
-                  Абонемент действует:{" "}
+                  Абонемент действует до:{" "}
                   <strong className={styles.strong}>
-                    {subscription.transaction.tariff.subExpireAt} дней
+                    {addDaysToDate(
+                      subscription.trainings[0].createdAt,
+                      Number(subscription.transaction.tariff.subExpireAt)
+                    )}
                   </strong>
                 </h5>
               </div>

@@ -21,7 +21,6 @@ export interface ITransaction {
   tariff: ITariff;
   training: ITraining;
   subscription: ISubscription;
-  subExpireAt: Date;
 }
 
 export interface IApiTransaction {

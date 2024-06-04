@@ -63,7 +63,10 @@ export const ClientEditForm = ({ clientID }: { clientID: number }) => {
       setUser(client);
       setFormData((prev) => ({
         ...prev,
-        name: client.name + " " + client.surname,
+        name:
+          user?.name +
+          " " +
+          (typeof user?.surname === "object" ? "" : user?.surname),
         phone: client.phone,
         messenger: client.chatType?.id.toString(),
         userNameInMessenger: client.userNameInMessenger,
@@ -142,6 +145,7 @@ export const ClientEditForm = ({ clientID }: { clientID: number }) => {
   const currentChatLabel = chatSelectOptions?.find(
     (option) => option.value.toString() === formData.messenger?.toString()
   );
+
   return (
     <>
       <Form style={{ width: "100%" }} name="validateOnly" layout="vertical">
@@ -158,7 +162,6 @@ export const ClientEditForm = ({ clientID }: { clientID: number }) => {
             <Input
               onChange={handleInputChange}
               value={formData.name}
-              defaultValue={user?.name + " " + user?.surname}
               name={"name"}
               size="large"
               placeholder="Имя и фамилия"

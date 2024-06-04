@@ -1,4 +1,12 @@
-import { Button, Form, message, Modal, Select, TimePickerProps } from "antd";
+import {
+  Button,
+  Form,
+  message,
+  Modal,
+  Select,
+  Switch,
+  TimePickerProps,
+} from "antd";
 import styles from "./ui.module.scss";
 import { DatePicker } from "antd";
 import { Children, useEffect, useState } from "react";
@@ -31,6 +39,7 @@ import { formatDateToDayAndDateFormat } from "@/shared/lib/parse/date";
 import { ITariff } from "@/shared/interface/tariff";
 import { convertToCurrencyFormat } from "@/shared/lib/parse/money";
 import { RangePickerProps } from "antd/es/date-picker";
+import { AxiosError } from "axios";
 
 export const CreateNewTraining = ({
   clientID,
@@ -43,7 +52,7 @@ export const CreateNewTraining = ({
 }) => {
   const [isTrainingEnd, setIsTrainingEnd] = useState<boolean>(true);
   const [tariffArray, setTariffArray] = useState<ITariff[]>();
-
+  const [isRepeatTraining, setIsRepeatTraining] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [IsModalConfirmLoading, setIsModalConfirmLoading] = useState(false);
   const [formData, setFormData] = useState<IFormData>({
@@ -237,19 +246,57 @@ export const CreateNewTraining = ({
       clubID: value,
     }));
   };
+
+  const createRepeatedTrainings = async () => {
+    const startDate = dayjs(formData.date.toString(), dateFormat);
+    const endDate = startDate.add(3, "month");
+
+    let currentDate = startDate.add(7, "day"); // Добавляем 7 дней сразу
+
+    do {
+      const formDataWithNewDate = {
+        ...formData,
+        date: currentDate.format(dateFormat),
+      };
+
+      try {
+        const response = await createTraining({
+          ...formDataWithNewDate,
+          clientID: formDataWithNewDate.clientID!,
+        });
+
+        if (response instanceof AxiosError) {
+          message.error("Ошибка при создании тренировки");
+          return;
+        }
+
+        console.log("Создана тренировка на:", currentDate.format(dateFormat));
+      } catch (error) {
+        console.error("Ошибка при создании тренировки:", error);
+        message.error("Не удалось создать тренировку");
+        return;
+      }
+
+      currentDate = currentDate.add(7, "day");
+    } while (currentDate.isBefore(endDate));
+
+    message.success("Тренировки успешно созданы на 3 месяца вперед");
+  };
   const handleCreateTraining = async () => {
+    setButtonLoading(true);
+    setIsModalConfirmLoading(true);
+
     try {
-      setButtonLoading(true);
-      const response = editTrainingData
-        ? await changeTraining(formData, editTrainingData.id)
-        : await createTraining(formData);
+      const response = await createTraining({
+        ...formData,
+        clientID: formData.clientID!,
+      });
+
       if (response instanceof Error) {
         message.open({
           type: "error",
           content: "Неудалось выполнить запрос",
         });
-        setButtonLoading(false);
-        return;
       } else {
         message.open({
           type: "success",
@@ -260,31 +307,52 @@ export const CreateNewTraining = ({
           )}`,
           duration: 4,
         });
-        router.push(`/app/dashboard`);
-        setButtonLoading(false);
+        router.push("/app/dashboard");
+        if (isRepeatTraining) {
+          await createRepeatedTrainings();
+        }
       }
-    } catch {
+    } finally {
+      setIsModalOpen(false);
       setButtonLoading(false);
+      setIsModalConfirmLoading(false);
+      router.refresh();
     }
   };
 
-  useEffect(() => {
-    if (date) {
-      const parsedDate = parseDateTime(date);
-      setFormData((prev) => ({
-        ...prev,
-        date: parsedDate[0].formatDate,
-        dateInput: dayjs(parsedDate[0].formatDate, "DD.MM.YYYY"),
-        clubID: parsedDate[0].formatClubID,
-        slotID:
-          slots?.find((slot) => slot.beginning === parsedDate[0].formatTime)
-            ?.id || null,
-      }));
-    }
-  }, [date, slots]);
+  const handleEditTraining = async () => {
+    setButtonLoading(true);
+    setIsModalConfirmLoading(true);
 
-  const showModal = () => {
-    setIsModalOpen(true);
+    try {
+      const response = await changeTraining(formData, editTrainingData?.id!);
+
+      if (response instanceof Error) {
+        message.open({
+          type: "error",
+          content: "Неудалось выполнить запрос",
+        });
+      } else {
+        message.open({
+          type: "success",
+          content: `Тренировка успешно ${
+            editTrainingData ? "изменена" : "создана"
+          } на ${formatDateToDayAndDateFormat(
+            response[0].date.toString().toLowerCase()
+          )}`,
+          duration: 4,
+        });
+      }
+    } finally {
+      setIsModalOpen(false);
+      setButtonLoading(false);
+      setIsModalConfirmLoading(false);
+      router.refresh();
+    }
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
   };
 
   const handleOk = async () => {
@@ -309,10 +377,17 @@ export const CreateNewTraining = ({
     }
   };
 
-  const handleCancel = () => {
-    setIsModalOpen(false);
+  const onFinish = async () => {
+    if (!isFormValid(formData)) return;
+    if (editTrainingData) {
+      await handleEditTraining();
+    } else {
+      await handleCreateTraining();
+    }
   };
-
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
   return (
     <>
       <Modal
@@ -502,7 +577,14 @@ export const CreateNewTraining = ({
               {selectTariffInArray?.cost && " ₽"}
             </p>
           </div>
-
+          {!editTrainingData && (
+            <div className={styles.repeatTraining}>
+              <label className={styles.switchLabel}>
+                Повторить тренировку на 3 месяца
+              </label>
+              <Switch value={isRepeatTraining} onChange={setIsRepeatTraining} />
+            </div>
+          )}
           <Form.Item
             style={{
               width: "100%",
@@ -512,7 +594,7 @@ export const CreateNewTraining = ({
           >
             <Button
               htmlType="submit"
-              onClick={handleCreateTraining}
+              onClick={onFinish}
               loading={isButtonLoading}
               disabled={
                 editTrainingData &&

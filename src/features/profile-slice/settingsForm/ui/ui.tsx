@@ -68,6 +68,8 @@ export const SettingsForm = () => {
         birthday: authUser.birthday?.toString(),
         birthDayInput: authUser.birthday ? dayjs(authUser.birthday) : null,
         phone: authUser.phone,
+        studiosID:
+          authUser.trainerProfile?.studios?.map((item) => item.id) || undefined,
         description: authUser.trainerProfile.description,
         experience: authUser.trainerProfile.experience,
         sports: authUser.trainerProfile.sports.map((item) =>
@@ -159,7 +161,7 @@ export const SettingsForm = () => {
       setButtonLoading(false);
     }
   };
-  console.log(formData.studiosID);
+
   return (
     <>
       <Form style={{ width: "100%" }} name="validateOnly" layout="vertical">
@@ -255,8 +257,7 @@ export const SettingsForm = () => {
               size="large"
               onChange={handleStudiosSelectChange}
               options={allStudios}
-              value={formData.studiosID}
-              getPopupContainer={(trigger) => trigger.parentNode}
+              value={formData.studiosID?.map((item) => item.toString())}
             />
           </Form.Item>
           <Form.Item

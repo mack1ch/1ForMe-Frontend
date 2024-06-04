@@ -23,7 +23,7 @@ export interface IUser {
 export interface ITrainerProfile {
   link?: string;
   tariff?: ITariff[];
-  studio?: IStudio;
+  studios?: IStudio[];
   whatsApp: string;
   clients?: IUser[];
   description: string;

@@ -13,4 +13,5 @@ export interface ISubscription {
   finishedTrainingsCount: number;
   nextTraining: ITraining;
   isFinished: boolean;
+  createdAt: Date;
 }

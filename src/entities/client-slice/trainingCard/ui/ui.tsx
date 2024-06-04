@@ -38,9 +38,7 @@ export const TrainingCard = ({
             <section className={styles.leftWrap}>
               <div className={styles.trainingInfo}>
                 <h4 className={styles.h4}>
-                  {isKnowClient
-                    ? day + " " + month.name.toLocaleLowerCase()
-                    : training.client.name + " " + training.client.surname}
+                  {training.client.name} {training.client.surname}
                 </h4>
                 <div className={styles.column}>
                   <h5 className={styles.h5}>

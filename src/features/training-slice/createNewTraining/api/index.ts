@@ -6,6 +6,7 @@ import { IUser } from "@/shared/interface/user";
 import { IFormData } from "../interface";
 import { IClubSlot } from "@/shared/interface/slots";
 import { convertDateFormatToDoteFormat } from "@/shared/lib/parse/date";
+import { AxiosError } from "axios";
 
 export const getTrainerClients = async (): Promise<IUser[] | Error> => {
   try {
@@ -68,7 +69,7 @@ export const getSlots = async (
 
 export const createTraining = async (
   training: IFormData
-): Promise<ITraining[] | Error> => {
+): Promise<ITraining[] | AxiosError> => {
   try {
     const { data }: { data: ITraining[] } = await instanceLogged.post(
       `/trainings`,
@@ -83,7 +84,7 @@ export const createTraining = async (
     );
     return data;
   } catch (error) {
-    return error as Error;
+    return error as AxiosError;
   }
 };
 
@@ -97,7 +98,7 @@ export const changeTraining = async (
       {
         slot: training.slotID,
         date: convertDateFormatToDoteFormat(training.date.toString()),
-        client: training.clientID,
+        client: training.clientID?.map((item) => item.toString()),
         type: 1,
         club: training.clubID,
         tariff: training.tariffID,

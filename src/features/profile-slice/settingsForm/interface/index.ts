@@ -10,6 +10,7 @@ export interface ISettingsFormUser {
   phone: string;
   studiosID?: string[] | number[];
   description?: string;
+ 
   sports?: string[] | number[];
 }
 
