@@ -28,7 +28,7 @@ export const TariffCard = () => {
   }, []);
   return (
     <>
-      {tariffs && (
+      {tariffs && tariffs.length > 0 && (
         <article className={styles.layout}>
           <div className={styles.header}>
             <div className={styles.row}>
@@ -40,7 +40,7 @@ export const TariffCard = () => {
                 {authUser.trainerProfile?.tax}% студии
               </span>
             ) : (
-              <Link className={styles.arrow} href="/app/profile/tariffs">
+              <Link className={styles.arrow} href="/app/profile/settings">
                 <Image src={Arrow} width={24} height={24} alt="Перейти" />
               </Link>
             )}

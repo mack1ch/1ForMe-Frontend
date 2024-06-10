@@ -114,7 +114,6 @@ export const RegisterWorkTimeCard = ({
     options?: ISelectOptions[]
   ) => {
     if (key === "studio" && options) {
-     
       setInputValues((prev) => ({
         ...prev,
         [key]: value,
@@ -202,6 +201,21 @@ export const RegisterWorkTimeCard = ({
               layout="vertical"
             >
               <div className={styles.formLayout}>
+                <div className={styles.chooseStudio}>
+                  <label className={styles.label}>Студия:</label>
+                  <Select
+                    onChange={(value: string) =>
+                      onSelectChange(value, "studio", studiosForSelectOptions)
+                    }
+                    options={studiosForSelectOptions}
+                    value={findOptionById(
+                      inputValues.studioID.toString(),
+                      studiosForSelectOptions
+                    )?.label?.toString()}
+                    placeholder="Выберите студию"
+                    style={{ width: "60%" }}
+                  />
+                </div>
                 <Form.Item
                   style={{ width: "100%" }}
                   label="Начало рабочего дня:"
@@ -230,21 +244,7 @@ export const RegisterWorkTimeCard = ({
                     }
                   />
                 </Form.Item>
-                <div className={styles.chooseStudio}>
-                  <label className={styles.label}>Студия:</label>
-                  <Select
-                    onChange={(value: string) =>
-                      onSelectChange(value, "studio", studiosForSelectOptions)
-                    }
-                    options={studiosForSelectOptions}
-                    value={findOptionById(
-                      inputValues.studioID.toString(),
-                      studiosForSelectOptions
-                    )?.label?.toString()}
-                    placeholder="Выберите студию"
-                    style={{ width: "60%" }}
-                  />
-                </div>
+
                 {slot && (
                   <button onClick={handleDeleteSlot} className={styles.delete}>
                     Удалить{" "}
