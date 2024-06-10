@@ -23,7 +23,7 @@ export const TrainingCard = ({
   useEffect(() => {
     setIsMyTraining(authTrainer?.id === training.trainer.id);
   }, [authTrainer?.id, training.trainer.id]);
-
+  console.log(isKnowClient);
   return (
     <>
       {training.id && isMyTraining ? (
@@ -38,7 +38,9 @@ export const TrainingCard = ({
             <section className={styles.leftWrap}>
               <div className={styles.trainingInfo}>
                 <h4 className={styles.h4}>
-                  {training.client.name} {training.client.surname}
+                  {isKnowClient
+                    ? `${day} ${month.name.toLowerCase()}`
+                    : `${training.client.name} ${training.client?.surname}`}
                 </h4>
                 <div className={styles.column}>
                   <h5 className={styles.h5}>

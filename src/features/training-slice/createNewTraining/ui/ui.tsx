@@ -9,8 +9,7 @@ import {
 } from "antd";
 import styles from "./ui.module.scss";
 import { DatePicker } from "antd";
-import { Children, useEffect, useState } from "react";
-
+import { useEffect, useState } from "react";
 import { IUser } from "@/shared/interface/user";
 import {
   cancelTrainerByID,
@@ -50,6 +49,7 @@ export const CreateNewTraining = ({
   editTrainingData?: ITraining;
   date?: string;
 }) => {
+  console.log(date);
   const [isTrainingEnd, setIsTrainingEnd] = useState<boolean>(true);
   const [tariffArray, setTariffArray] = useState<ITariff[]>();
   const [isRepeatTraining, setIsRepeatTraining] = useState<boolean>(false);
@@ -385,6 +385,21 @@ export const CreateNewTraining = ({
   const showModal = () => {
     setIsModalOpen(true);
   };
+
+  useEffect(() => {
+    if (date) {
+      const parsedDate = parseDateTime(date);
+      setFormData((prev) => ({
+        ...prev,
+        date: parsedDate[0].formatDate,
+        dateInput: dayjs(parsedDate[0].formatDate, "DD.MM.YYYY"),
+        clubID: parsedDate[0].formatClubID,
+        slotID:
+          slots?.find((slot) => slot.beginning === parsedDate[0].formatTime)
+            ?.id || null,
+      }));
+    }
+  }, [date, slots]);
   return (
     <>
       <Modal

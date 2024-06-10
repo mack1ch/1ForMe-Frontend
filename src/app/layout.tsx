@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.scss";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
+import { ServiceWorker } from "@/shared/pwa/serviceWorker";
 
 export const metadata: Metadata = {
   title: "1ForMe",
@@ -38,6 +39,7 @@ export default function RootLayout({
   return (
     <html lang="ru">
       <body className={RF_Dewi.className}>
+        <ServiceWorker />
         <AntdRegistry>{children}</AntdRegistry>
       </body>
     </html>

@@ -16,13 +16,13 @@
     {
       "src": "./favicon.jpg",
       "sizes": "512x512",
-      "type": "image/png",
+      "type": "image/jpg",
       "purpose": "any"
     },
     {
       "src": "/favicon.jpg",
       "sizes": "1025x1025",
-      "type": "image/png",
+      "type": "image/jpg",
       "purpose": "any"
     }
   ]
