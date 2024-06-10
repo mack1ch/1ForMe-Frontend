@@ -144,7 +144,7 @@ export const RegisterWorkTimeCard = ({
         if (res instanceof Error) return;
         message.open({
           type: "success",
-          content: "Расписание соханено",
+          content: "Расписание сохранено",
         });
       }
     } catch (error) {
