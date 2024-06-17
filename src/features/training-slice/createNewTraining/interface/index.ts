@@ -1,3 +1,4 @@
+import { ITraining } from "@/shared/interface/training";
 import dayjs from "dayjs";
 import { ReactNode } from "react";
 
@@ -16,3 +17,7 @@ export interface IFormData {
   isRepeated: boolean;
 }
 
+export interface ITrainingsResponse {
+  existingTrainingsDates: Date[];
+  trainings: ITraining[];
+}

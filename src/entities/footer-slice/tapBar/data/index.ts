@@ -3,7 +3,7 @@ import Celendar from "../../../../../public/icons/header/calendar-grey.svg";
 import FourUsers from "../../../../../public/icons/header/fourUsers-grey.svg";
 import ChartBar from "../../../../../public/icons/header/chartBar-grey.svg";
 import CircleUser from "../../../../../public/icons/header/userCircle-grey.svg";
-import Messanger from "../../../../../public/icons/header/сhatCircleText.svg";
+import Messanger from "../../../../../public/icons/header/сhatCircleText-grey.svg";
 
 export const DTapBar: ITapBarItem[] = [
   {

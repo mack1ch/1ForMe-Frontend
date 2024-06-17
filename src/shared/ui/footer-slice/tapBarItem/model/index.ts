@@ -3,7 +3,7 @@ import ChartBarBlack from "../../../../../../public/icons/header/chartBar-black.
 import Calendar from "../../../../../../public/icons/header/calendar-black.svg";
 import FourUsersBlack from "../../../../../../public/icons/header/fourUsers-black.svg";
 import UserCircleBlack from "../../../../../../public/icons/header/userCircle-black.svg";
-import MessangerBlack from "../../../../../../public/icons/header/messanger-black.svg";
+import MessangerBlack from "../../../../../../public/icons/header/сhatCircleText-black.svg";
 import { TTapBarItemTitle } from "@/shared/interface/footer";
 
 export const getActiveIconByActiveTitle = (
@@ -23,7 +23,9 @@ export const getActiveIconByActiveTitle = (
     case "Профиль": {
       return UserCircleBlack;
     }
-
+    case "Чат": {
+      return MessangerBlack;
+    }
     default: {
       return undefined;
     }

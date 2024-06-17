@@ -240,6 +240,7 @@ export const CreateNewTraining = ({
       ...prev,
       isRepeated: value,
     }));
+    setIsRepeatTraining(value);
   };
 
   const onHandleTariffChange = (value: string) => {
@@ -273,12 +274,19 @@ export const CreateNewTraining = ({
       } else {
         message.open({
           type: "success",
-          content: `Тренировка успешно ${
-            editTrainingData ? "изменена" : "создана"
-          } на ${formatDateToDayAndDateFormat(
-            response[0].date.toString().toLowerCase()
-          )}`,
-          duration: 4,
+          content:
+            response.existingTrainingsDates.length > 0
+              ? `Тренировки созданы, но слоты заняты на ${response.existingTrainingsDates.map(
+                  (date) => formatDateToDayAndDateFormat(date.toString()) + ", "
+                )}советуем сказать клиенту об этом`
+              : response.trainings.length > 0
+              ? `Все тренировки успешно созданы, ближайшая состоится ${formatDateToDayAndDateFormat(
+                  response.trainings[0].date
+                )}`
+              : `Тренировка успешно создана на ${formatDateToDayAndDateFormat(
+                  response.trainings[0].date
+                )}`,
+          duration: 6,
         });
         router.push("/app/dashboard");
       }
@@ -305,12 +313,19 @@ export const CreateNewTraining = ({
       } else {
         message.open({
           type: "success",
-          content: `Тренировка успешно ${
-            editTrainingData ? "изменена" : "создана"
-          } на ${formatDateToDayAndDateFormat(
-            response[0].date.toString().toLowerCase()
-          )}`,
-          duration: 4,
+          content:
+            response.existingTrainingsDates.length > 0
+              ? `Слоты заняты на ${response.existingTrainingsDates.map(
+                  (date) => formatDateToDayAndDateFormat(date.toString()) + ", "
+                )}советуем сказать клиенту об этом`
+              : response.trainings.length > 0
+              ? `Все тренировки успешно созданы, ближайшая состоится ${formatDateToDayAndDateFormat(
+                  response.trainings[0].date
+                )}`
+              : `Тренировка успешно создана на ${formatDateToDayAndDateFormat(
+                  response.trainings[0].date
+                )}`,
+          duration: 6,
         });
       }
     } finally {

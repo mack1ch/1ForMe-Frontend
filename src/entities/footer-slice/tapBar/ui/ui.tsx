@@ -4,6 +4,7 @@ import { DTapBar } from "../data";
 import { TapBarItem } from "@/shared/ui/footer-slice/tapBarItem";
 
 export const TapBar = ({ subChildren }: { subChildren?: ReactNode }) => {
+  
   return (
     <>
       {subChildren ? (

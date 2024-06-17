@@ -3,7 +3,7 @@ import { IClub } from "@/shared/interface/studio";
 import { ITariff } from "@/shared/interface/tariff";
 import { ITraining } from "@/shared/interface/training";
 import { IUser } from "@/shared/interface/user";
-import { IFormData } from "../interface";
+import { IFormData, ITrainingsResponse } from "../interface";
 import { IClubSlot } from "@/shared/interface/slots";
 import { convertDateFormatToDoteFormat } from "@/shared/lib/parse/date";
 import { AxiosError } from "axios";
@@ -69,9 +69,9 @@ export const getSlots = async (
 
 export const createTraining = async (
   training: IFormData
-): Promise<ITraining[] | AxiosError> => {
+): Promise<ITrainingsResponse | AxiosError> => {
   try {
-    const { data }: { data: ITraining[] } = await instanceLogged.post(
+    const { data }: { data: ITrainingsResponse } = await instanceLogged.post(
       `/trainings`,
       {
         slot: training.slotID,
@@ -80,7 +80,7 @@ export const createTraining = async (
         type: 1,
         club: training.clubID,
         tariff: training.tariffID,
-        isRepeat: training.isRepeated,
+        isRepeated: training.isRepeated,
       }
     );
     return data;
@@ -92,9 +92,9 @@ export const createTraining = async (
 export const changeTraining = async (
   training: IFormData,
   trainingID: number
-): Promise<ITraining[] | Error> => {
+): Promise<ITrainingsResponse | Error> => {
   try {
-    const { data }: { data: ITraining[] } = await instanceLogged.patch(
+    const { data }: { data: ITrainingsResponse } = await instanceLogged.patch(
       `/trainings/${trainingID}`,
       {
         slot: training.slotID,
