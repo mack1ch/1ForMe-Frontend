@@ -62,6 +62,7 @@ export const CreateNewTraining = ({
     clientID: clientID ? [clientID] : null,
     tariffID: null,
     clubID: null,
+    isRepeated: isRepeatTraining,
   });
   const temporaryFormData = { ...editTrainingData };
   const [selectClientsOptions, setSelectClientsOptions] =
@@ -234,6 +235,13 @@ export const CreateNewTraining = ({
     }));
   };
 
+  const onHandleRepeatTrainingChange = (value: boolean) => {
+    setFormData((prev) => ({
+      ...prev,
+      isRepeated: value,
+    }));
+  };
+
   const onHandleTariffChange = (value: string) => {
     setFormData((prev) => ({
       ...prev,
@@ -247,38 +255,6 @@ export const CreateNewTraining = ({
     }));
   };
 
-  const createRepeatedTrainings = async () => {
-    const startDate = dayjs(formData.date.toString(), dateFormat);
-    const endDate = startDate.add(3, "month");
-
-    let currentDate = startDate.add(7, "day"); // Добавляем 7 дней сразу
-
-    do {
-      const formDataWithNewDate = {
-        ...formData,
-        date: currentDate.format(dateFormat),
-      };
-
-      try {
-        const response = await createTraining({
-          ...formDataWithNewDate,
-          clientID: formDataWithNewDate.clientID!,
-        });
-
-        if (response instanceof AxiosError) {
-          message.error("Ошибка при создании тренировки");
-          return;
-        }
-      } catch (error) {
-        message.error("Не удалось создать тренировку");
-        return;
-      }
-
-      currentDate = currentDate.add(7, "day");
-    } while (currentDate.isBefore(endDate));
-
-    message.success("Тренировки успешно созданы на 3 месяца вперед");
-  };
   const handleCreateTraining = async () => {
     setButtonLoading(true);
     setIsModalConfirmLoading(true);
@@ -305,9 +281,6 @@ export const CreateNewTraining = ({
           duration: 4,
         });
         router.push("/app/dashboard");
-        if (isRepeatTraining) {
-          await createRepeatedTrainings();
-        }
       }
     } finally {
       setIsModalOpen(false);
@@ -594,7 +567,10 @@ export const CreateNewTraining = ({
               <label className={styles.switchLabel}>
                 Повторить тренировку на 3 месяца
               </label>
-              <Switch value={isRepeatTraining} onChange={setIsRepeatTraining} />
+              <Switch
+                value={isRepeatTraining}
+                onChange={onHandleRepeatTrainingChange}
+              />
             </div>
           )}
           <Form.Item

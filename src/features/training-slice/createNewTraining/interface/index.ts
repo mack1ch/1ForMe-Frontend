@@ -13,4 +13,6 @@ export interface IFormData {
   clientID: number[] | string[] | null;
   tariffID: number | string | null;
   clubID: number | string | null;
+  isRepeated: boolean;
 }
+
