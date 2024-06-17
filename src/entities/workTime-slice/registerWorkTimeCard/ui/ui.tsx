@@ -5,9 +5,8 @@ import styles from "./ui.module.scss";
 import Arrow from "../../../../../public/icons/workTime/arrowDown.svg";
 import { CSSProperties, useEffect, useMemo, useState } from "react";
 import { DashDivider } from "@/shared/ui/divider-slice/dashDivider/ui/ui";
-import { Form, message, Select, SelectProps } from "antd";
+import { Form, message, Select } from "antd";
 import { ITrainerSlot } from "@/shared/interface/slots";
-
 import {
   createNewSlot,
   deleteSlotByID,
