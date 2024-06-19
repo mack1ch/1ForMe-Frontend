@@ -49,6 +49,7 @@ export const TapBarItem = ({
   return (
     <>
       <Badge
+        size="small"
         count={
           tapBarItemProps.title === "Чат" ? unansweredMessageCounter : undefined
         }
