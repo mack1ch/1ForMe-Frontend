@@ -19,8 +19,8 @@ export const getIframeLink = async (
       "https://api.wazzup24.com/v3/iframe/",
       {
         user: {
-          id: user?.id.toString(),
-          name: user?.name.toString(),
+          id: "1",
+          name: "admin",
         },
         scope: "card",
         filter: [
