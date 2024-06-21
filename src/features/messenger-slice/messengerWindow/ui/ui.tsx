@@ -13,7 +13,8 @@ export const MessengerWindow = ({ user }: { user?: IUser }) => {
       const link = await getIframeLink(
         user?.chatType!,
         user?.phone!,
-        user?.userNameInMessenger
+        user?.userNameInMessenger,
+        user
       );
 
       if (link instanceof Error) return;

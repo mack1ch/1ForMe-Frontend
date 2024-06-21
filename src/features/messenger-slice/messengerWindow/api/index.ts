@@ -2,11 +2,13 @@ import { wazzupInstance } from "@/shared/api/axios-config";
 import { IURL } from "../interface";
 import { IChatTypes } from "@/shared/interface/chats";
 import { formatUserName } from "../model";
+import { IUser } from "@/shared/interface/user";
 
 export const getIframeLink = async (
   chatType: IChatTypes,
   phone: string,
-  userName?: string
+  userName?: string,
+  user?: IUser
 ): Promise<IURL | Error> => {
   try {
     const username =
@@ -17,8 +19,8 @@ export const getIframeLink = async (
       "https://api.wazzup24.com/v3/iframe/",
       {
         user: {
-          id: "1",
-          name: "admin",
+          id: user?.id.toString(),
+          name: user?.name.toString(),
         },
         scope: "card",
         filter: [
