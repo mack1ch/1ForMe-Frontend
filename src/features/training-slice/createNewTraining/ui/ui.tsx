@@ -286,7 +286,7 @@ export const CreateNewTraining = ({
               : `Тренировка успешно создана на ${formatDateToDayAndDateFormat(
                   response.trainings[0].date
                 )}`,
-          duration: 6,
+          duration: 8,
         });
         router.push("/app/dashboard");
       }
@@ -313,18 +313,10 @@ export const CreateNewTraining = ({
       } else {
         message.open({
           type: "success",
-          content:
-            response.existingTrainingsDates.length > 0
-              ? `Слоты заняты на ${response.existingTrainingsDates.map(
-                  (date) => formatDateToDayAndDateFormat(date.toString()) + ", "
-                )}советуем сказать клиенту об этом`
-              : response.trainings.length > 0
-              ? `Все тренировки успешно созданы, ближайшая состоится ${formatDateToDayAndDateFormat(
-                  response.trainings[0].date
-                )}`
-              : `Тренировка успешно создана на ${formatDateToDayAndDateFormat(
-                  response.trainings[0].date
-                )}`,
+          content: `Тренировка успешно перенесена на ${formatDateToDayAndDateFormat(
+            response.date
+          )}`,
+
           duration: 6,
         });
       }

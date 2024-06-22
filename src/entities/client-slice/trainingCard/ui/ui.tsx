@@ -23,7 +23,7 @@ export const TrainingCard = ({
   useEffect(() => {
     setIsMyTraining(authTrainer?.id === training.trainer.id);
   }, [authTrainer?.id, training.trainer.id]);
-  console.log(isKnowClient);
+
   return (
     <>
       {training.id && isMyTraining ? (
@@ -72,10 +72,14 @@ export const TrainingCard = ({
                       color: training.subscription
                         ? training.subscription.transaction.status.toLowerCase() ===
                           "unpaid"
-                          ? "#9F0000"
+                          ? "#9F0000" ||
+                            training.subscription.transaction.status.toLowerCase() ===
+                              "canceled"
                           : "#6FAE48"
                         : training.transaction?.status?.toLowerCase() ===
-                          "unpaid"
+                            "unpaid" ||
+                          training.transaction?.status.toLowerCase() ===
+                            "canceled"
                         ? "#9F0000"
                         : "#6FAE48",
                     }}

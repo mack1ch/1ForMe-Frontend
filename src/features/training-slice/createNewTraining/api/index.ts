@@ -92,9 +92,9 @@ export const createTraining = async (
 export const changeTraining = async (
   training: IFormData,
   trainingID: number
-): Promise<ITrainingsResponse | Error> => {
+): Promise<ITraining | Error> => {
   try {
-    const { data }: { data: ITrainingsResponse } = await instanceLogged.patch(
+    const { data }: { data: ITraining } = await instanceLogged.patch(
       `/trainings/${trainingID}`,
       {
         slot: training.slotID,
