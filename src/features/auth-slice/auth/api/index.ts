@@ -21,6 +21,7 @@ export const registerUser = async (
   try {
     const { data }: { data: IToken } = await instance.post("/auth/register/", {
       phone: authProps.phone,
+      name: authProps.name,
       password: authProps.password,
       role: "trainer",
     });

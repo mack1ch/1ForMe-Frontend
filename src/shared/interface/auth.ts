@@ -1,4 +1,5 @@
 export interface IAuth {
+  name?: string;
   phone: string;
   password: string;
 }

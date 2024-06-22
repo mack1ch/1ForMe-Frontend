@@ -32,7 +32,7 @@ export const ProfileCard = () => {
               <Avatar avatarLink={user.avatar} />
               <div className={styles.column}>
                 <h3 className={styles.user_name}>
-                  {user.name && user.surname
+                  {user.name || user.surname
                     ? user.name + " " + user.surname
                     : "Измените имя"}
                 </h3>

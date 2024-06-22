@@ -3,7 +3,7 @@
 import { ConfigProvider, Form, Input } from "antd";
 import styles from "./ui.module.scss";
 import { useEffect } from "react";
-import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import { LockOutlined, PhoneOutlined, UserOutlined } from "@ant-design/icons";
 import { isNonEmptyArray } from "@/shared/lib/check/emptyArray";
 import { IAuth } from "@/shared/interface/auth";
 import { DRequestFields } from "../data";
@@ -16,10 +16,12 @@ export const FormInputs = ({
   setSubmitted,
   formData,
   setFormData,
+  type = "login",
 }: {
   placeholder: string;
   setSubmitted: (arg: boolean) => void;
   formData: IAuth;
+  type: "login" | "register";
   setFormData: React.Dispatch<React.SetStateAction<IAuth>>;
 }) => {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,6 +55,30 @@ export const FormInputs = ({
     <>
       <ConfigProvider theme={inputTheme}>
         <div className={styles.layout}>
+          {type === "register" && (
+            <Form.Item
+              style={{
+                width: "100%",
+                textAlign: "start",
+                alignItems: "flex-start",
+              }}
+            >
+              <Input
+                prefix={
+                  <UserOutlined
+                    style={{ color: "#cfcfcf" }}
+                    className="site-form-item-icon"
+                  />
+                }
+                autoComplete="current-password"
+                name="name"
+                value={formData.name}
+                onChange={handleInputChange}
+                size="large"
+                placeholder="Введите имя"
+              />
+            </Form.Item>
+          )}
           <Form.Item
             style={{
               width: "100%",
@@ -79,7 +105,7 @@ export const FormInputs = ({
                     placeholder={placeholder}
                     type="number"
                     prefix={
-                      <UserOutlined
+                      <PhoneOutlined
                         style={{ color: "#cfcfcf" }}
                         className="site-form-item-icon"
                       />

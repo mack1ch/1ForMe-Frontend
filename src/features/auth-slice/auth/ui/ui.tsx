@@ -19,6 +19,7 @@ export const Auth = () => {
   const [formData, setFormData] = useState<IAuth>({
     phone: "",
     password: "",
+    name: "",
   });
   const [isButtonDisable, setButtonDisable] = useState(true);
   const [isButtonLoading, setButtonLoading] = useState(false);
@@ -111,6 +112,7 @@ export const Auth = () => {
               layout="vertical"
             >
               <FormInputs
+                type={activeButton}
                 formData={formData}
                 setFormData={setFormData}
                 setSubmitted={setButtonDisable}

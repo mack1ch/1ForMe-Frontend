@@ -28,7 +28,7 @@ export const TariffCard = () => {
   }, []);
   return (
     <>
-      {tariffs && (
+      {tariffs && tariffs.length > 0 && (
         <article className={styles.layout}>
           <div className={styles.header}>
             <div className={styles.row}>
